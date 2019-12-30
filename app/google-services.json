@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "836977482751",
+    "firebase_url": "https://artbox-backend.firebaseio.com",
+    "project_id": "artbox-backend",
+    "storage_bucket": "artbox-backend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836977482751:android:4da424f6db4072026be5ca",
+        "android_client_info": {
+          "package_name": "com.example.artbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836977482751-f69nns8400dcqkumrtcvmjduv5713i21.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.artbox",
+            "certificate_hash": "fc59430130f4946550e8e9049207b20d412be36a"
+          }
+        },
+        {
+          "client_id": "836977482751-hn7m5c6ge5b0p6p1shvku2c55l1gusmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.artbox",
+            "certificate_hash": "10f1c6a3b7db11e881cb3faf7520471eff54e0a5"
+          }
+        },
+        {
+          "client_id": "836977482751-fbf0c9h1bv1tootidrodrsejcud1hha2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFIZH-YRcHfbPv6oFpxepHu7oD6eOMOZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836977482751-fbf0c9h1bv1tootidrodrsejcud1hha2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ArtBox</string>
+    <!--    <string name="app_name">Art Box</string>-->
+    <string name="title_activity_home_page">home_page</string>
+    <string name="title_activity_sign_up">sign_up</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+        <color name="bg_color">#1B222E</color>
+<!--        //010101-->
+        <color name="bar_color">#2E384A</color>
+<!--        //181818-->
+        <color name="text_color">#E7E7E7</color>
+        <color name="text_color1">#747474</color>
+        <color name="icons">#FA6B21</color>
+<!--        <color name="ic_launcher_background">#000000</color>-->
+<!--        //FF0066-->
+    </resources>
+
