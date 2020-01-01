@@ -1,10 +1,7 @@
 package com.example.artbox;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-
 public class userPosts {
+    private String url;
+    private String caption;
     public String getUrl() {
         return url;
     }
@@ -20,8 +17,4 @@ public class userPosts {
     public void setCaption(String caption) {
         this.caption = caption;
     }
-
-    String url;
-    String caption;
-
 }

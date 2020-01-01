@@ -32,7 +32,7 @@
         android:layout_gravity="bottom"
         app:itemBackground="@color/bar_color"
         app:itemIconSize="35dp"
-        app:itemIconTint="@color/icons"
+        app:itemIconTint="@color/end"
         app:menu="@menu/btm_menu"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import static java.security.AccessController.getContext;
+
 
 public class user_profile_fragment extends Fragment {
 
@@ -54,9 +57,9 @@ public class user_profile_fragment extends Fragment {
         super.onCreate(savedInstanceState);
         View v=inflater.inflate(R.layout.fragment_user_profile_fragment, container, false);
         recyclerView=(RecyclerView) v.findViewById(R.id.post_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         upload_post=new ArrayList<userPosts>();
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        //FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         user_id=firebaseAuth.getUid().toString();
         adapter=new user_post_adapter(upload_post);
@@ -74,13 +77,11 @@ public class user_profile_fragment extends Fragment {
                 adapter.update(upload_post);
                 adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
         return v;
     }
 }

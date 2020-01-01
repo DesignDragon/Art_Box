@@ -26,7 +26,7 @@
             app:itemIconTint="@color/text_color"
             android:textAlignment="center"
             app:itemIconSize="35dp"
-            app:itemTextColor="@color/text_color1"
+            app:itemTextColor="@color/text_color"
             ></com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +53,7 @@ public class upload_picture extends AppCompatActivity {
     private ImageView upload;
     private Button submit;
     private EditText description;
+    private byte[] imgData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,12 +99,13 @@ public class upload_picture extends AppCompatActivity {
                     }
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     compress.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                    byte[] imgData = byteArrayOutputStream.toByteArray();
+                     imgData = byteArrayOutputStream.toByteArray();
                     UploadTask imgPath = storageReference.child(user_id).child(description.getText().toString() +".jpg").putBytes(imgData);
                     imgPath.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
+
                                 storeData(task);
                                 startActivity(new Intent(upload_picture.this,side_menu.class));
                             } else {
@@ -114,20 +118,33 @@ public class upload_picture extends AppCompatActivity {
         });
     }
 
-    private void storeData(Task<UploadTask.TaskSnapshot> task)
-    {
-        Uri download_uri;
+    private void storeData(Task<UploadTask.TaskSnapshot> task) {
+
         if (task != null) {
-            download_uri = task.getResult().getUploadSessionUri();
-        } else {
-            download_uri = imageUri;
+            try {
+                task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("url", uri.toString());
+                        userData.put("caption", description.getText().toString());
+                        //firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").add(userData);
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("ee", e.toString());
+            }
+
+//        Map<String, Object> userData = new HashMap<>();
+//        userData.put("url", download_uri.toString());
+//        userData.put("caption",description.getText().toString());
+//        //firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").add(userData);
+//        DatabaseReference db=FirebaseDatabase.getInstance().getReference();
+//        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);
         }
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("url", download_uri.toString());
-        userData.put("caption",description.getText().toString());
-        //firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").add(userData);
-        DatabaseReference db=FirebaseDatabase.getInstance().getReference();
-        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);
     }
 
     private void chooseImage()

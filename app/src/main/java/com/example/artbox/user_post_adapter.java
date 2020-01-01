@@ -17,12 +17,12 @@ public class user_post_adapter extends RecyclerView.Adapter<user_post_adapter.po
 
     private ArrayList<userPosts> post_data;
     public class post_view_holder extends RecyclerView.ViewHolder {
-        View v;
-        ImageView image_view;
+        public View v;
+        public ImageView image_view;
         public post_view_holder(View t)
         {
             super(t);
-            image_view=v.findViewById(R.id.imageView);
+            image_view=(ImageView) t.findViewById(R.id.imageView);
         }
     }
     public user_post_adapter(ArrayList<userPosts> data)
