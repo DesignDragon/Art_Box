@@ -4,27 +4,23 @@
     <item
         android:id="@+id/home"
         android:icon="@drawable/home_icon"
-        app:showAsAction="ifRoom"
-        android:title=""/>
+        android:title=""
+        />
     <item
         android:id="@+id/search"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom"
         android:title=""
         />
     <item
         android:id="@+id/add_picture"
         android:icon="@drawable/add"
-        app:showAsAction="ifRoom"
         android:title=""/>
     <item
         android:id="@+id/camera"
         android:icon="@drawable/camera"
-        app:showAsAction="ifRoom"
         android:title="" />
     <item
         android:id="@+id/notification"
         android:icon="@drawable/notification"
-        app:showAsAction="ifRoom"
         android:title="" />
 </menu>

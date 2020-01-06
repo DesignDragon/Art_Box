@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +20,12 @@ public class user_post_adapter extends RecyclerView.Adapter<user_post_adapter.po
     public class post_view_holder extends RecyclerView.ViewHolder {
         public View v;
         public ImageView image_view;
+
         public post_view_holder(View t)
         {
             super(t);
             image_view=(ImageView) t.findViewById(R.id.imageView);
+
         }
     }
     public user_post_adapter(ArrayList<userPosts> data)

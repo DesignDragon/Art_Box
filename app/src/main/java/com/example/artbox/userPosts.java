@@ -2,6 +2,7 @@ package com.example.artbox;
 public class userPosts {
     private String url;
     private String caption;
+
     public String getUrl() {
         return url;
     }

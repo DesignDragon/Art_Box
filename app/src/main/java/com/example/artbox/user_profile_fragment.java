@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
@@ -44,7 +45,9 @@ public class user_profile_fragment extends Fragment {
     public View view;
     private FirebaseFirestore firebaseFirestore;
     private String user_id;
+    private String username;
     private FirebaseAuth firebaseAuth;
+    private TextView user;
 
     public user_profile_fragment() {
         // Required empty public constructor
@@ -56,15 +59,26 @@ public class user_profile_fragment extends Fragment {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
         View v=inflater.inflate(R.layout.fragment_user_profile_fragment, container, false);
+
         recyclerView=(RecyclerView) v.findViewById(R.id.post_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         upload_post=new ArrayList<userPosts>();
-        //FirebaseFirestore.getInstance();
+        firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         user_id=firebaseAuth.getUid().toString();
         adapter=new user_post_adapter(upload_post);
         recyclerView.setAdapter(adapter);
         //storageReference= FirebaseStorage.getInstance().getReference("image_store/"+user_id.toString()+"jpg");
+
+        user=(TextView) v.findViewById(R.id.user_name);
+        firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String username=documentSnapshot.getString("username");
+                user.setText(username);
+            }
+        });
+
         DatabaseReference d=FirebaseDatabase.getInstance().getReference();
         d.child("USERS").child(user_id).child("POSTS").addValueEventListener(new ValueEventListener() {
             @Override

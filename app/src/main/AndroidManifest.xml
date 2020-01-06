@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".upload_picture"></activity>
-        <activity android:name=".top_app_bar" />
         <activity android:name=".side_menu" />
         <activity android:name=".bottom_app_bar" />
         <activity android:name=".sign_up" />

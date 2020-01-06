@@ -2,11 +2,15 @@ package com.example.artbox;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -16,12 +20,20 @@ public class side_menu extends AppCompatActivity {
     BottomNavigationView bottomappbar;
     NavigationView nav;
     Fragment f=null;
+    DrawerLayout d;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
-
-        /*viewPager = (ViewPager) findViewById(R.id.view_pager_for_bottom);*/
+        Toolbar toolbar=(Toolbar) findViewById(R.id.top_bar);
+        d=(DrawerLayout) findViewById(R.id.side_menu);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.openDrawer(Gravity.LEFT);
+            }
+        });
 
         nav=(NavigationView)findViewById(R.id.left_menu);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -29,7 +41,7 @@ public class side_menu extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId())
                 {
-                    case R.id.user_profile:
+                    case R.id.user_profile_pic:
                         f=new user_profile_fragment();
                         break;
                     case R.id.logout:
