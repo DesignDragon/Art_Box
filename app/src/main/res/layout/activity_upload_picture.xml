@@ -20,7 +20,7 @@
             android:id="@+id/image_store"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/camera"
+            android:src="@drawable/gallery"
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp"
             android:layout_marginTop="30dp"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/caption"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="420dp"
         android:layout_marginEnd="30dp"
         app:cardBackgroundColor="@color/bar_color"
         app:cardCornerRadius="20dp"
@@ -64,7 +64,7 @@
         android:layout_marginStart="150dp"
         android:layout_marginEnd="150dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/gradient"
+        android:background="#ffff"
         android:text="UPLOAD"
         android:textColor="@color/text_color"></Button>
 </RelativeLayout>

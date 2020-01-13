@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<gradient
-    android:type="linear"
-    android:startColor="@color/start"
-    android:endColor="@color/end"
-    android:angle="-90">
-</gradient>
+    android:shape="rectangle">
+    <stroke android:width="10dp"
+        android:color="@color/start">
+    </stroke>
 </shape>

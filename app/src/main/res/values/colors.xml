@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
         <color name="bg_color">#000000</color>
         <color name="bar_color">#1A1A1A</color>
         <color name="text_color">#E7E7E7</color>

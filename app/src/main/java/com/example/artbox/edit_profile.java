@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,12 +14,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,36 +42,37 @@ import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 
-public class upload_picture extends AppCompatActivity {
-
+public class edit_profile extends AppCompatActivity {
+    TextView chooseImg;
+    private Uri imageUri = null;
+    private Bitmap compress;
+    public ImageView change_picture;
+    private byte[] imgData;
+    private Button update;
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
     private String user_id;
     private FirebaseAuth firebaseAuth;
-    private Uri imageUri = null;
-    private Bitmap compress;
-    private ImageView upload;
-    private Button submit;
-    private EditText description;
-    private byte[] imgData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_picture);
-        firebaseAuth= FirebaseAuth.getInstance();
-        user_id= firebaseAuth.getCurrentUser().getUid();
-        upload= (ImageView) findViewById(R.id.image_store);
+        setContentView(R.layout.activity_edit_profile);
         firebaseFirestore= FirebaseFirestore.getInstance();
         storageReference= FirebaseStorage.getInstance().getReference();
-        upload.setOnClickListener(new View.OnClickListener() {
+        firebaseAuth= FirebaseAuth.getInstance();
+        user_id= firebaseAuth.getCurrentUser().getUid();
+        chooseImg=(TextView) findViewById(R.id.choose);
+        change_picture=(ImageView) findViewById(R.id.change_profile);
+        chooseImg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 {
-                    if(ContextCompat.checkSelfPermission(upload_picture.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                    if(ContextCompat.checkSelfPermission(edit_profile.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
                     {
-                        Toast.makeText(upload_picture.this,"Permission Denied",Toast.LENGTH_LONG).show();
-                        ActivityCompat.requestPermissions(upload_picture.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
+                        Toast.makeText(edit_profile.this,"Permission Denied",Toast.LENGTH_LONG).show();
+                        ActivityCompat.requestPermissions(edit_profile.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
                     }
                     else
                     {
@@ -83,41 +84,43 @@ public class upload_picture extends AppCompatActivity {
                 }
             }
         });
-        submit= (Button) findViewById(R.id.upload);
-        description=(EditText) findViewById(R.id.description);
-        submit.setOnClickListener(new View.OnClickListener() {
+
+        update=(Button) findViewById(R.id.update_data);
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                final String image_caption=description.getText().toString();
-                if(!TextUtils.isEmpty(image_caption)&&imageUri!=null)
-                {
-                    File newFile= new File(imageUri.getPath());
+            public void onClick(View v) {
+                if(imageUri!=null) {
+                    File newFile = new File(imageUri.getPath());
                     try {
-                        compress = new Compressor(upload_picture.this).setMaxHeight(125).setMaxWidth(125).setQuality(50).compressToBitmap(newFile);
-                    }catch (IOException e) {
+                        compress = new Compressor(edit_profile.this).setMaxHeight(125).setMaxWidth(125).setQuality(50).compressToBitmap(newFile);
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     compress.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                     imgData = byteArrayOutputStream.toByteArray();
-                    UploadTask imgPath = storageReference.child(user_id).child(description.getText().toString() +".jpg").putBytes(imgData);
+                    imgData = byteArrayOutputStream.toByteArray();
+                    UploadTask imgPath = storageReference.child(user_id).child("profile.jpg").putBytes(imgData);
                     imgPath.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
-
                                 storeData(task);
-                                startActivity(new Intent(upload_picture.this,side_menu.class));
-                                finish();
                             } else {
-                                Toast.makeText(upload_picture.this, "Somethng went wrong", Toast.LENGTH_LONG).show();
+                                Toast.makeText(edit_profile.this, "Somethng went wrong", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
                 }
+                else{
+                    Log.d("fail","update fail");
+                }
+                startActivity(new Intent(edit_profile.this,side_menu.class));
+                finish();
             }
         });
+
     }
+
 
     private void storeData(Task<UploadTask.TaskSnapshot> task) {
 
@@ -129,10 +132,9 @@ public class upload_picture extends AppCompatActivity {
 
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("url", uri.toString());
-                        userData.put("caption", description.getText().toString());
                         //firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").add(userData);
                         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);
+                        db.child("USERS").child(user_id).child("PROFILE").setValue(userData);
                     }
                 });
             } catch (Exception e) {
@@ -150,11 +152,10 @@ public class upload_picture extends AppCompatActivity {
 
     public void chooseImage()
     {
-        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(upload_picture.this);
+        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(edit_profile.this);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        upload=(ImageView) findViewById(R.id.image_store);
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
@@ -166,7 +167,7 @@ public class upload_picture extends AppCompatActivity {
                 try {
                     Bitmap b= null;
                     b = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-                    upload.setImageBitmap(b);
+                    change_picture.setImageBitmap(b);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

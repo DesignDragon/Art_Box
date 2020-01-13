@@ -20,7 +20,8 @@
         android:icon="@drawable/camera"
         android:title="" />
     <item
-        android:id="@+id/notification"
-        android:icon="@drawable/notification"
-        android:title="" />
+        android:id="@+id/auction"
+        android:icon="@drawable/auction"
+        android:title=""
+        />
 </menu>

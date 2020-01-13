@@ -4,34 +4,51 @@
         <item
             android:id="@+id/user_profile_pic"
             android:icon="@drawable/profile"
-            android:title="Profile"></item>
+            android:title="Profile">
+        </item>
+        <item
+            android:id="@+id/edit"
+            android:icon="@drawable/edit_profile"
+            android:title="Edit Profile">
+        </item>
         <item
             android:id="@+id/save"
             android:icon="@drawable/save"
-            android:title="Saved"></item>
+            android:title="Saved">
+        </item>
+        <item
+            android:id="@+id/user_auct"
+            android:icon="@drawable/user_auction"
+            android:title="Auction Panel">
+        </item>
         <item
             android:id="@+id/logout"
             android:icon="@drawable/logout"
-            android:title="Logout"></item>
+            android:title="Logout">
+        </item>
     </group>
     <item android:title="">
         <menu>
             <item
                 android:id="@+id/setting"
                 android:icon="@drawable/setting"
-                android:title="Settings"></item>
+                android:title="Settings">
+            </item>
             <item
                 android:id="@+id/privacy"
                 android:icon="@drawable/privacy"
-                android:title="Privacy"></item>
+                android:title="Privacy">
+            </item>
             <item
                 android:id="@+id/security"
                 android:icon="@drawable/security"
-                android:title="Secuity"></item>
+                android:title="Secuity">
+            </item>
             <item
                 android:id="@+id/help"
                 android:icon="@drawable/help"
-                android:title="Help"></item>
+                android:title="Help">
+            </item>
         </menu>
     </item>
 </menu>

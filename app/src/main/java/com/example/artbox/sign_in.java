@@ -67,7 +67,7 @@ public class sign_in extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful())
                 {
-                    startActivity(new Intent(sign_in.this, side_menu.class));
+                    startActivity(new Intent(sign_in.this, bottom_app_bar.class));
                     finish();
                 }
                 else

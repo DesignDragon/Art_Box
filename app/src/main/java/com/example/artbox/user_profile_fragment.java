@@ -1,21 +1,33 @@
 package com.example.artbox;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,9 +42,20 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import id.zelory.compressor.Compressor;
+
+import static android.app.Activity.RESULT_OK;
 import static java.security.AccessController.getContext;
 
 
@@ -40,7 +63,7 @@ public class user_profile_fragment extends Fragment {
 
     private RecyclerView recyclerView;
     private user_post_adapter adapter;
-    private StorageReference storageReference;
+//    private StorageReference storageReference;
     private ArrayList<userPosts> upload_post;
     public View view;
     private FirebaseFirestore firebaseFirestore;
@@ -48,7 +71,7 @@ public class user_profile_fragment extends Fragment {
     private String username;
     private FirebaseAuth firebaseAuth;
     private TextView user;
-
+    private ImageView setProfile;
     public user_profile_fragment() {
         // Required empty public constructor
     }
@@ -66,9 +89,11 @@ public class user_profile_fragment extends Fragment {
         firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         user_id=firebaseAuth.getUid().toString();
-        adapter=new user_post_adapter(upload_post);
+        adapter=new user_post_adapter(upload_post,getActivity().getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
+        setProfile=(ImageView) v.findViewById(R.id.set_profile);
         //storageReference= FirebaseStorage.getInstance().getReference("image_store/"+user_id.toString()+"jpg");
+
 
         user=(TextView) v.findViewById(R.id.user_name);
         firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -80,6 +105,21 @@ public class user_profile_fragment extends Fragment {
         });
 
         DatabaseReference d=FirebaseDatabase.getInstance().getReference();
+        d.child("USERS").child(user_id).child("PROFILE").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                {
+                    String profile=dataSnapshot1.getValue().toString();
+                    Glide.with(getContext()).load(profile).into(setProfile);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         d.child("USERS").child(user_id).child("POSTS").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

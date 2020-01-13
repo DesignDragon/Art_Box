@@ -14,8 +14,7 @@
         android:layout_height="250dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/gradient">
+        android:layout_alignParentEnd="true">
 
         <!--  <ImageView
             android:id="@+id/profile_picture"
@@ -118,23 +117,25 @@
             android:layout_marginStart="81dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="66dp"
-            android:layout_toEndOf="@+id/imageView2"
+            android:layout_toEndOf="@id/set_profile"
             android:text="username"
             android:textAlignment="center"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/set_profile"
+            android:src="@drawable/profile"
             android:layout_above="@+id/followers"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="15dp"
-            tools:src="@tools:sample/avatars" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
+        </ImageView>
+
     </RelativeLayout>
    <!-- <RelativeLayout
         android:layout_width="match_parent"

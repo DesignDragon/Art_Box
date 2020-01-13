@@ -86,7 +86,7 @@ public class camera extends Fragment {
     private CaptureRequest.Builder captureRequestBuilder;
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private ImageReader imageReader;
-
+    private ImageView upload;
     private static final SparseIntArray ORIENTATIONS= new SparseIntArray();
     static {
         ORIENTATIONS.append(Surface.ROTATION_0,90);
@@ -94,7 +94,6 @@ public class camera extends Fragment {
         ORIENTATIONS.append(Surface.ROTATION_180,270);
         ORIENTATIONS.append(Surface.ROTATION_180,180);
     }
-
 
 
     public camera() {
@@ -112,6 +111,11 @@ public class camera extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_camera, container, false);
+
+        if(getActivity()!=null && getActivity() instanceof side_menu)
+        {
+            ((side_menu)getActivity()).getNav().setVisibility(view.GONE);
+        }
 
         textureView= (TextureView) view.findViewById(R.id.textureView);
         assert textureView!=null;

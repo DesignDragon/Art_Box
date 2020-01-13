@@ -44,6 +44,15 @@ public class side_menu extends AppCompatActivity {
                     case R.id.user_profile_pic:
                         f=new user_profile_fragment();
                         break;
+                    case R.id.edit:
+                        /*f=new edit_profile_fragment();
+                        break;
+                        */
+                        startActivity(new Intent(side_menu.this,edit_profile.class));
+                        finish();
+                    case R.id.user_auct:
+                        f=new user_auction_fragment();
+                        break;
                     case R.id.logout:
                         logout();
                 }
@@ -53,6 +62,7 @@ public class side_menu extends AppCompatActivity {
 
 
         bottomappbar = (BottomNavigationView) findViewById(R.id.btm_view);
+
         bottomappbar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -120,11 +130,15 @@ public class side_menu extends AppCompatActivity {
     }
 */
     }
+    public BottomNavigationView getNav()
+    {
+        return bottomappbar;
+    }
     private boolean loadFragment(Fragment fragment)
     {
         if(fragment!=null)
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,fragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frag_container,fragment).addToBackStack(null).commit();
             return true;
         }
         return false;
