@@ -3,6 +3,7 @@ package com.example.artbox;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -49,20 +50,20 @@ public class side_menu extends AppCompatActivity {
                         break;
                         */
                         startActivity(new Intent(side_menu.this,edit_profile.class));
-                        finish();
                     case R.id.user_auct:
-                        f=new user_auction_fragment();
+
                         break;
                     case R.id.logout:
                         logout();
                 }
+                d.closeDrawer(GravityCompat.START);
                 return loadFragment(f);
             }
         });
 
 
-        bottomappbar = (BottomNavigationView) findViewById(R.id.btm_view);
 
+        bottomappbar = (BottomNavigationView) findViewById(R.id.btm_view);
         bottomappbar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override

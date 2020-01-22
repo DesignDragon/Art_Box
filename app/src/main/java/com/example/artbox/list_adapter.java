@@ -1,11 +1,14 @@
 package com.example.artbox;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 public class list_adapter extends RecyclerView.Adapter<list_adapter.MyViewHolder>
 {
     private ArrayList<userProfileData> data_set;
+    private Context context;
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         View v;
         public MyViewHolder(View t){
@@ -20,7 +24,8 @@ public class list_adapter extends RecyclerView.Adapter<list_adapter.MyViewHolder
             v=t;
         }
     }
-    public list_adapter(ArrayList<userProfileData> data){
+    public list_adapter(ArrayList<userProfileData> data,Context c){
+        context=c;
         data_set=data;
     }
     @NonNull
@@ -34,6 +39,14 @@ public class list_adapter extends RecyclerView.Adapter<list_adapter.MyViewHolder
     public void onBindViewHolder(@NonNull list_adapter.MyViewHolder holder, int position) {
         TextView txt=holder.v.findViewById(R.id.sdata);
         txt.setText(data_set.get(position).getUsername());
+
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager=((AppCompatActivity)context).getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.frag_container,new user_profile_fragment()).commit();
+            }
+        });
     }
 
     @Override

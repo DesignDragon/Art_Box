@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -33,13 +34,14 @@ public class search_tab_fragment extends Fragment {
     public RecyclerView rv;
     public RecyclerView.Adapter adapter;
     EditText searchuser;
+    TextView user;
     private ArrayList<userProfileData> user_data;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_search_tab_fragment, container, false);
+        final View view = inflater.inflate(R.layout.fragment_search_tab_fragment, container, false);
      /*  EditText e=(EditText) view.findViewById(R.id.search_box);
        String s=e.getText().toString();
        searchUser(s);*/
@@ -78,6 +80,7 @@ public class search_tab_fragment extends Fragment {
 //            }
 //        });
 
+
         return view;
     }
     protected void searchUser (String s)
@@ -98,7 +101,7 @@ public class search_tab_fragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-        adapter = new list_adapter(user_data);
+        adapter = new list_adapter(user_data,getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);

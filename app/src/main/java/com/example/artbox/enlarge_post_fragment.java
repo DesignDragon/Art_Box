@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
 
 public class enlarge_post_fragment extends DialogFragment {
@@ -53,5 +56,10 @@ public class enlarge_post_fragment extends DialogFragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

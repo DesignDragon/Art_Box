@@ -29,8 +29,8 @@
             android:background="@color/bar_color"
             android:textAlignment="center"
             app:itemIconSize="35dp"
-            app:itemTextColor="@color/text_color"
-            ></com.google.android.material.navigation.NavigationView>
+            app:itemTextColor="@color/text_color">
+        </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </RelativeLayout>

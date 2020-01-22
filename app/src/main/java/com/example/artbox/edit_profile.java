@@ -43,7 +43,7 @@ import java.util.Map;
 import id.zelory.compressor.Compressor;
 
 public class edit_profile extends AppCompatActivity {
-    TextView chooseImg;
+
     private Uri imageUri = null;
     private Bitmap compress;
     public ImageView change_picture;
@@ -62,9 +62,9 @@ public class edit_profile extends AppCompatActivity {
         storageReference= FirebaseStorage.getInstance().getReference();
         firebaseAuth= FirebaseAuth.getInstance();
         user_id= firebaseAuth.getCurrentUser().getUid();
-        chooseImg=(TextView) findViewById(R.id.choose);
+
         change_picture=(ImageView) findViewById(R.id.change_profile);
-        chooseImg.setOnClickListener(new View.OnClickListener() {
+        change_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)

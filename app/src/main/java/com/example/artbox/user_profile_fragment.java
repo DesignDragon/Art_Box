@@ -2,6 +2,7 @@ package com.example.artbox;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -28,6 +29,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.auth.api.signin.internal.SignInHubActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,6 +76,8 @@ public class user_profile_fragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private TextView user;
     private ImageView setProfile;
+
+
     public user_profile_fragment() {
         // Required empty public constructor
     }
@@ -82,6 +88,8 @@ public class user_profile_fragment extends Fragment {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
         View v=inflater.inflate(R.layout.fragment_user_profile_fragment, container, false);
+
+
 
         recyclerView=(RecyclerView) v.findViewById(R.id.post_recycler);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
@@ -137,5 +145,10 @@ public class user_profile_fragment extends Fragment {
             }
         });
         return v;
+    }
+
+    protected void showProgress()
+    {
+
     }
 }
