@@ -130,9 +130,9 @@ public class upload_picture extends AppCompatActivity {
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("url", uri.toString());
                         userData.put("caption", description.getText().toString());
-                        //firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").add(userData);
-                        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);
+                        firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").document(description.getText().toString()).set(userData);
+                       /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                        db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);*/
                     }
                 });
             } catch (Exception e) {

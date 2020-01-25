@@ -53,6 +53,7 @@ public class enlarge_post_fragment extends DialogFragment {
                 user_auction_fragment f = new user_auction_fragment();
                 f.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
+                dismiss();
             }
         });
         return v;

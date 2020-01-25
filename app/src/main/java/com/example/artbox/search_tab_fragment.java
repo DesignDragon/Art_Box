@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,12 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +37,8 @@ import javax.annotation.Nullable;
 
 public class search_tab_fragment extends Fragment {
     private FirebaseFirestore db;
+//    private FirebaseDatabase db;
+//    private DatabaseReference reference;
     public View view;
     public RecyclerView rv;
     public RecyclerView.Adapter adapter;
@@ -46,6 +55,8 @@ public class search_tab_fragment extends Fragment {
        String s=e.getText().toString();
        searchUser(s);*/
         db = FirebaseFirestore.getInstance();
+        //db=FirebaseDatabase.getInstance();
+        //reference=db.getReference().child("DETAILS");
         rv = (RecyclerView) view.findViewById(R.id.search_recycler_view);
         SearchView searchView = (SearchView) view.findViewById(R.id.search_box);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -86,7 +97,27 @@ public class search_tab_fragment extends Fragment {
     protected void searchUser (String s)
     {
         user_data=new ArrayList<userProfileData>();
-        db.collection("USERS").whereGreaterThanOrEqualTo("username", s).addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        /*Query searchQuery=reference.child("USERS").child("DETAILS").equalTo("username",s);
+        searchQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot doc : dataSnapshot.getChildren()) {
+                    userProfileData user = doc.child("username").getValue(userProfileData.class);
+                    Log.d("key", user.getUsername());
+                    user_data.add(user);
+
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+
+        db.collection("DETAILS").whereGreaterThanOrEqualTo("username", s).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {

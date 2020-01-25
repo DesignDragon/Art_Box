@@ -44,6 +44,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -104,31 +106,54 @@ public class user_profile_fragment extends Fragment {
 
 
         user=(TextView) v.findViewById(R.id.user_name);
-        firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("USERS").document(user_id).collection("DETAILS").document("USER_DATA").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String username=documentSnapshot.getString("username");
+                String profile=documentSnapshot.getString("url").toString();
+                Glide.with(getContext()).load(profile).into(setProfile);
                 user.setText(username);
             }
         });
+        firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                upload_post.clear();
+//                for(userPosts d :queryDocumentSnapshots.toObjects(userPosts.class)){
+//                    userPosts p=d.getValue(userPosts.class);
+//                    upload_post.add(p);
+//                }
 
-        DatabaseReference d=FirebaseDatabase.getInstance().getReference();
-        d.child("USERS").child(user_id).child("PROFILE").addValueEventListener(new ValueEventListener() {
+                for(QueryDocumentSnapshot s :queryDocumentSnapshots) {
+                        userPosts up=s.toObject(userPosts.class);
+                        upload_post.add(up);
+                }
+                adapter.update(upload_post);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        /*DatabaseReference d=FirebaseDatabase.getInstance().getReference();
+        d.child("USERS").child(user_id).child("DETAILS").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                String profile=dataSnapshot.child("url").getValue(String.class);
+                Glide.with(getContext()).load(profile).into(setProfile);
+                String username=dataSnapshot.child("username").getValue(String.class);
+                user.setText(username);
+                *//*for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
                 {
                     String profile=dataSnapshot1.getValue().toString();
                     Glide.with(getContext()).load(profile).into(setProfile);
-                }
+                }*//*
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
-        d.child("USERS").child(user_id).child("POSTS").addValueEventListener(new ValueEventListener() {
+        });*/
+        /*d.child("USERS").child(user_id).child("POSTS").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 upload_post.clear();
@@ -143,7 +168,7 @@ public class user_profile_fragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
         return v;
     }
 

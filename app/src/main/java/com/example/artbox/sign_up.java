@@ -97,8 +97,10 @@ public class sign_up extends AppCompatActivity {
         user.put(USERNAME,name);
         user.put(EMAIL,email);
         user.put(UID,id);
-        DocumentReference DocRef=db.collection("USERS").document(id);
+        DocumentReference DocRef=db.collection("USERS").document(id).collection("DETAILS").document("USER_DATA");
         DocRef.set(user);
+       /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        db.child("USERS").child(id).child("DETAILS").setValue(user);*/
 //        db.collection("USERS").document("user_names").set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
 //            @Override
 //            public void onSuccess(Void aVoid) {

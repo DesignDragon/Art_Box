@@ -27,11 +27,11 @@ import java.util.Map;
 public class user_auction_fragment extends Fragment {
     ImageView i;
     EditText desc;
-    EditText init_price;
+    EditText price;
     Button submit;
+    FirebaseFirestore firebaseFirestore;
     private String user_id;
     private FirebaseAuth firebaseAuth;
-    private String info,amt;
     public user_auction_fragment() {
         // Required empty public constructor
     }
@@ -42,13 +42,14 @@ public class user_auction_fragment extends Fragment {
 
         firebaseAuth= FirebaseAuth.getInstance();
         user_id= firebaseAuth.getCurrentUser().getUid();
+        firebaseFirestore=FirebaseFirestore.getInstance();
         i=(ImageView) v.findViewById(R.id.img_auct);
         final String post_auct=getArguments().getString("auct");
         Glide.with(v.getContext()).load(post_auct).into(i);
-        desc=(EditText) v.findViewById(R.id.post_desc);
-        info=desc.getText().toString();
-        init_price=(EditText) v.findViewById(R.id.init_price);
-        amt=init_price.getText().toString();
+        desc=(EditText) v.findViewById(R.id.auct_desc);
+        price=(EditText) v.findViewById(R.id.init_price);
+//        final String info=desc.getText().toString();
+//        final String amt=price.getText().toString();
         submit=(Button) v.findViewById(R.id.submit_auct);
         try{
             submit.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +57,11 @@ public class user_auction_fragment extends Fragment {
                 public void onClick(View v) {
                     Map<String,Object> data=new HashMap<>();
                     //data.put("image",post_auct.toString());
-                    data.put("DETAILS",desc);
-                    data.put("PRICE",amt);
-                    DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                    db.child("AUCTION").setValue(data);
+                    data.put("POST",post_auct);
+                    data.put("DETAILS",desc.getText().toString());
+                    data.put("PRICE",price.getText().toString());
+                   firebaseFirestore.collection("AUCTION").add(data);
+                   getFragmentManager().beginTransaction().replace(R.id.frag_container,new user_profile_fragment()).addToBackStack(null).commit();
                 }
             });
         }
