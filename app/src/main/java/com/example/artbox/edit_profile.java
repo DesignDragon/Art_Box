@@ -132,7 +132,7 @@ public class edit_profile extends AppCompatActivity {
 
                         Map<String, Object> userData = new HashMap<>();
                         userData.put("url", uri.toString());
-                        firebaseFirestore.collection("USERS").document(user_id).collection("DETAILS").document("USER_DATA").update(userData);
+                        firebaseFirestore.collection("USERS").document(user_id).update(userData);
                        /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                         db.child("USERS").child(user_id).child("DETAILS").updateChildren(userData);*/
 

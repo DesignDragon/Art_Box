@@ -7,8 +7,7 @@
     tools:context=".sign_in"
     android:background="@color/bg_color">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+    <EditText
         android:id="@+id/emailid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,22 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:boxCornerRadiusTopEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
-        app:boxBackgroundColor="@color/bar_color">
+        android:hint="EMAIL ADDRESS"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20dp"/>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:hint="EMAIL ADDRESS"
-            android:inputType="textEmailAddress"
-            android:textAlignment="center"
-            android:textColorHint="#FFFFFF"
-            android:textSize="20dp"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+    <EditText
         android:id="@+id/pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,20 +35,11 @@
         app:layout_constraintTop_toBottomOf="@+id/emailid"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        app:boxBackgroundColor="@color/bar_color"
-        app:boxCornerRadiusTopEnd="25dp"
-        app:boxCornerRadiusBottomStart="25dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="PASSWORD"
-            android:inputType="textPassword"
-            android:textAlignment="center"
-            android:textColorHint="#FFFFFF"
-            android:textSize="20dp">
-        </com.google.android.material.textfield.TextInputEditText>
-    </com.google.android.material.textfield.TextInputLayout>
-
+        android:hint="PASSWORD"
+        android:inputType="textPassword"
+        android:textAlignment="center"
+        android:textColorHint="#FFFFFF"
+        android:textSize="20dp"/>
     <ImageView
         android:id="@+id/login"
         android:layout_width="150dp"

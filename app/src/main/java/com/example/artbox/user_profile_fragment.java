@@ -106,7 +106,7 @@ public class user_profile_fragment extends Fragment {
 
 
         user=(TextView) v.findViewById(R.id.user_name);
-        firebaseFirestore.collection("USERS").document(user_id).collection("DETAILS").document("USER_DATA").get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String username=documentSnapshot.getString("username");

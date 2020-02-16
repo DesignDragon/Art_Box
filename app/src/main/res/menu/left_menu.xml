@@ -17,7 +17,7 @@
             android:title="Saved">
         </item>
         <item
-            android:id="@+id/user_auct"
+            android:id="@+id/auct_panel"
             android:icon="@drawable/user_auction"
             android:title="Auction Panel">
         </item>

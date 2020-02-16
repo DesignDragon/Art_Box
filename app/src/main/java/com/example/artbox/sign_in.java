@@ -21,8 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class sign_in extends AppCompatActivity {
     private FirebaseAuth authenticate;
-    private TextInputEditText Editemail;
-    private TextInputEditText Editpass;
+    private EditText Editemail;
+    private EditText Editpass;
     private ImageView login;
     private TextView signup;
     private String email="";
@@ -34,8 +34,8 @@ public class sign_in extends AppCompatActivity {
         signup=(TextView) findViewById(R.id.signup);
         authenticate=FirebaseAuth.getInstance();
         login=findViewById(R.id.login);
-        Editemail=(TextInputEditText) findViewById(R.id.emailid);
-        Editpass=(TextInputEditText) findViewById(R.id.pass);
+        Editemail=(EditText) findViewById(R.id.emailid);
+        Editpass=(EditText) findViewById(R.id.pass);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

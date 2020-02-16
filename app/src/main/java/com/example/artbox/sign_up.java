@@ -50,6 +50,7 @@ public class sign_up extends AppCompatActivity {
     private static final String USERNAME ="username";
     private static final String EMAIL="email";
     private static final String UID="id";
+    private static final String url="url";
     private FirebaseAuth authenticate;
     private FirebaseFirestore db;
     private StorageReference storageReference;
@@ -97,7 +98,8 @@ public class sign_up extends AppCompatActivity {
         user.put(USERNAME,name);
         user.put(EMAIL,email);
         user.put(UID,id);
-        DocumentReference DocRef=db.collection("USERS").document(id).collection("DETAILS").document("USER_DATA");
+
+        DocumentReference DocRef=db.collection("USERS").document(id);
         DocRef.set(user);
        /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("USERS").child(id).child("DETAILS").setValue(user);*/

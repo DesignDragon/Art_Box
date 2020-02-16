@@ -50,8 +50,8 @@ public class side_menu extends AppCompatActivity {
                         break;
                         */
                         startActivity(new Intent(side_menu.this,edit_profile.class));
-                    case R.id.user_auct:
-
+                    case R.id.auct_panel:
+                        f=new auction_panel_fragment();
                         break;
                     case R.id.logout:
                         logout();
