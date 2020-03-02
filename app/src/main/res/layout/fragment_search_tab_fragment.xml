@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".search_tab_fragment"
     android:id="@+id/search_edit_frame"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:layout_marginTop="?actionBarSize">
     <SearchView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/search_box"
         android:layout_width="match_parent"

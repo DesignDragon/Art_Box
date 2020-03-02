@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:836977482751:android:a9e4ed2a7619cbf66be5ca",
+        "android_client_info": {
+          "package_name": "com.example.ArtBox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836977482751-fbf0c9h1bv1tootidrodrsejcud1hha2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFIZH-YRcHfbPv6oFpxepHu7oD6eOMOZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836977482751-fbf0c9h1bv1tootidrodrsejcud1hha2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:836977482751:android:4da424f6db4072026be5ca",
         "android_client_info": {
           "package_name": "com.example.artbox"

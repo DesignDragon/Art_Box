@@ -6,13 +6,4 @@
     tools:context=".auction_panel_fragment"
     android:background="@color/bg_color"
     android:scrollbars="vertical">
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/auction_recycler"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true">
-    </androidx.recyclerview.widget.RecyclerView>
 </RelativeLayout>

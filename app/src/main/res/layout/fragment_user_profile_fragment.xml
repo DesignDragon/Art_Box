@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".user_profile_fragment"
     android:id="@+id/main_relLayout"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    android:layout_marginTop="?actionBarSize">
 
     <RelativeLayout
         android:id="@+id/relLayout1"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true">
@@ -30,7 +31,7 @@
             android:id="@+id/followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/followers_count"
+            android:layout_below="@id/user_name"
             android:layout_alignParentStart="true"
             android:layout_marginStart="30dp"
             android:layout_marginBottom="15dp"
@@ -43,7 +44,8 @@
             android:id="@+id/following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/following_count"
+            android:layout_below="@id/user_name"
+            android:layout_toRightOf="@id/followers"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="15dp"
@@ -58,7 +60,7 @@
             android:id="@+id/post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/post_count"
+            android:layout_below="@id/user_name"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="15dp"
@@ -69,10 +71,10 @@
 
         <TextView
             android:id="@+id/followers_count"
+            android:layout_below="@id/followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="70dp"
             android:layout_marginBottom="30dp"
             android:text="0"
@@ -82,9 +84,9 @@
 
         <TextView
             android:id="@+id/following_count"
+            android:layout_below="@id/following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="120dp"
             android:layout_marginEnd="120dp"
             android:layout_marginBottom="30dp"
@@ -97,10 +99,10 @@
 
         <TextView
             android:id="@+id/post_count"
+            android:layout_below="@id/post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginEnd="50dp"
             android:layout_marginBottom="30dp"
             android:text="0"
@@ -108,53 +110,75 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
+
         <TextView
             android:id="@+id/user_name"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_profile"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="20dp"
+            android:text="username"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/set_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_above="@+id/user_name"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/add_profile_pic" />
+
+        <Button
+            android:id="@+id/edit_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="81dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="66dp"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginEnd="20dp"
             android:layout_toEndOf="@id/set_profile"
-            android:text="username"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/set_profile"
-            android:src="@drawable/add_profile_pic"
-            android:layout_above="@id/followers"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp">
-        </com.mikhaellopez.circularimageview.CircularImageView>
+            android:background="@drawable/button_design"
+            android:text="Edit Profile"
+            android:textColor="@color/text_color"
+            />
 
     </RelativeLayout>
-   <!-- <RelativeLayout
+
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/relLayout2"
-        android:background="@drawable/gradient"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabs"
         android:layout_below="@id/relLayout1"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
-    </RelativeLayout>-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/post_recycler"
+        android:layout_alignParentEnd="true"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/relLayout1"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabs"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:scrollbars="vertical"
-        android:layout_marginTop="20dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginBottom="70dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <!-- <androidx.recyclerview.widget.RecyclerView
+         android:id="@+id/post_recycler"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_below="@id/relLayout1"
+         android:layout_alignParentStart="true"
+         android:layout_alignParentEnd="true"
+         android:layout_alignParentBottom="true"
+         android:scrollbars="vertical"
+         android:layout_marginTop="20dp">
+     </androidx.recyclerview.widget.RecyclerView>-->
 </RelativeLayout>

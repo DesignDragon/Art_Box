@@ -6,11 +6,7 @@
             android:icon="@drawable/profile"
             android:title="Profile">
         </item>
-        <item
-            android:id="@+id/edit"
-            android:icon="@drawable/edit_profile"
-            android:title="Edit Profile">
-        </item>
+
         <item
             android:id="@+id/save"
             android:icon="@drawable/save"
