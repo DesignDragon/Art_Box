@@ -15,6 +15,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -28,6 +30,8 @@ public class bidding extends Fragment {
     private TextView pr;
     private Button bid;
     int bid_placed;
+    String bidder_name;
+    String bid_amt;
     private FirebaseFirestore firebaseFirestore;
     public bidding() {
         // Required empty public constructor
@@ -55,7 +59,7 @@ public class bidding extends Fragment {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 picker.setValue((newVal<oldVal)?oldVal-1000:newVal+1000);
                 bid_placed=picker.getValue();
-
+                bid_amt= String.valueOf(bid_placed);
             }
         });
         desc.setText(getArguments().getString("auctionDesc").toString());
@@ -65,13 +69,19 @@ public class bidding extends Fragment {
         Log.d("auctid",ItemId);
         /*placing bidding data into database*/
         firebaseFirestore=FirebaseFirestore.getInstance();
-
+        firebaseFirestore.collection("USERS").document(bidder_uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                 bidder_name=documentSnapshot.getString("username");
+            }
+        });
         bid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Map<String,Object> data=new HashMap<>();
                 data.put("bidder_id",bidder_uid);
-                data.put("bid_amount",bid_placed);
+                data.put("bid_amount",bid_amt);
+                data.put("bidder_name",bidder_name);
                 firebaseFirestore.collection("USERS").document(user_id).
                         collection("AUCTION").document(ItemId).
                         collection("BIDDERS").document(bidder_uid).set(data);

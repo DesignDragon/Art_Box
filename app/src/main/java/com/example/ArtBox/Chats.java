@@ -2,7 +2,9 @@ package com.example.ArtBox;
 
 import android.os.Bundle;
 
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ public class Chats extends Fragment {
     private ArrayList<userProfileData> data;
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth auth;
+    private ContentLoadingProgressBar pbar;
     public Chats() {
         // Required empty public constructor
     }
@@ -39,6 +42,8 @@ public class Chats extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_chats, container, false);
+        pbar=v.findViewById(R.id.progress_bar);
+        pbar.setVisibility(v.VISIBLE);
         data=new ArrayList<userProfileData>();
         r=(RecyclerView) v.findViewById(R.id.chat_list_recycler);
         auth=FirebaseAuth.getInstance();
@@ -53,12 +58,13 @@ public class Chats extends Fragment {
                         {
                             userProfileData user = s.toObject(userProfileData.class);
                             user.getUsername();
+                            user.getId();
                             data.add(user);
                         }
                         adapter.notifyDataSetChanged();
                     }
                 });
-        adapter = new chat_list_adapter(data,getContext());
+        adapter = new chat_list_adapter(data,getContext(), getActivity().getSupportFragmentManager());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         r.setLayoutManager(layoutManager);
         r.setAdapter(adapter);

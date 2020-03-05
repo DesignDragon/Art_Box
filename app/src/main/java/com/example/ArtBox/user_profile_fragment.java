@@ -1,8 +1,12 @@
 package com.example.ArtBox;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -41,7 +45,8 @@ public class user_profile_fragment extends Fragment {
     Button editB;
     private TextView followers;
     private TextView following;
-
+    private TextView following_num;
+    private ContentLoadingProgressBar pbar;
     public user_profile_fragment() {
         // Required empty public constructor
     }
@@ -53,6 +58,13 @@ public class user_profile_fragment extends Fragment {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState);
         final View v=inflater.inflate(R.layout.fragment_user_profile_fragment, container, false);
+        Toolbar toolbar=v.findViewById(R.id.toolbarprofile);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        pbar=v.findViewById(R.id.progress_bar);
+        pbar.setVisibility(v.VISIBLE);
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
@@ -60,12 +72,10 @@ public class user_profile_fragment extends Fragment {
         setProfile=(ImageView) v.findViewById(R.id.set_profile);
         //storageReference= FirebaseStorage.getInstance().getReference("image_store/"+user_id.toString()+"jpg");
         user=(TextView) v.findViewById(R.id.user_name);
-
-
-
-
         editB=(Button) v.findViewById(R.id.edit_profile);
         following=(TextView) v.findViewById(R.id.following);
+        following_num=(TextView) v.findViewById(R.id.following_count);
+
         /*Checking for searched user data after clicking on the username in search tab.
           If the user id is there its profile will be visible else current logged in user profile will be visible
           */
@@ -98,6 +108,17 @@ public class user_profile_fragment extends Fragment {
                         }
                     });
 
+
+                    /*Displays following count*/
+                    firebaseFirestore.collection("USERS").document(search_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            following_num.setText(String.valueOf(queryDocumentSnapshots.size()));
+                            Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
+                        }
+                    });
+
+
                     /*checking if the current user has followed the searched user or not
                     * if the user is followed by the curent user the button text is changed to unfollow else follow*/
                     firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -108,7 +129,7 @@ public class user_profile_fragment extends Fragment {
                                 String follower_id=s.get("id").toString();
                                 if(search_id.equals(follower_id))
                                 {
-                                    editB.setText("Unfollow");
+                                    editB.setText("Following");
                                 }
                             }
                         }
@@ -119,12 +140,13 @@ public class user_profile_fragment extends Fragment {
                         editB.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                editB.setText("Unfollow");
+                                editB.setText("Following");
                                 Map<String,Object> data=new HashMap<>();
                                 data.put("username",username);
                                 data.put("id",search_id);
                                 data.put("url",profile);
                                 firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").document(username).set(data);
+
                             }
                         });
                     } catch (Exception e){
@@ -143,6 +165,15 @@ public class user_profile_fragment extends Fragment {
                 public void onClick(View v) {
                     following_list f=new following_list();
                     getFragmentManager().beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
+                }
+            });
+
+            /*Displays following count*/
+            firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    following_num.setText(String.valueOf(queryDocumentSnapshots.size()));
+                    Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
                 }
             });
 
@@ -208,5 +239,10 @@ public class user_profile_fragment extends Fragment {
             }
         });*/
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 }

@@ -84,6 +84,8 @@ public class following_list extends Fragment {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             r.setLayoutManager(layoutManager);
             r.setAdapter(adapter);
+            int followCount=data.size();
+
         }
         return v;
     }

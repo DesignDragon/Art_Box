@@ -50,6 +50,7 @@ public class side_menu extends AppCompatActivity {
                 {
                     case R.id.user_profile_pic:
                         f=new user_profile_fragment();
+
                         break;
                     case R.id.auct_panel:
                         f=new auction_panel_fragment();

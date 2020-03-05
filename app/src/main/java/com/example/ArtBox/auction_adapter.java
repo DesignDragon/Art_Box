@@ -98,20 +98,23 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
         timerRunning=true;
         final String user_id=data.get(position).getUid().toString();
         final String biddeer_uid=FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
-
         holder.auctionCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(user_id.equals(biddeer_uid))
                 {
                     bid_details f=new bid_details();
+                    final Bundle b= new Bundle();
+                    b.putString("auctionid",data.get(position).getAuctionId());
+                    b.putString("bidder_uid",biddeer_uid);
+                    b.putString("user_id",user_id);
+                    f.setArguments(b);
                     fragmentManager.beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
                 }
                 else{
                     bidding b=new bidding();
                     final Bundle bundle= new Bundle();
                     bundle.putString("auction_id",data.get(position).getAuctionId());
-                    Log.d("preid",data.get(position).getAuctionId());
                     bundle.putString("auctPost",data.get(position).getUrl().toString());
                     bundle.putString("auctInitialPrice",data.get(position).getPrice().toString());
                     bundle.putString("auctionDesc",data.get(position).getDetails().toString());

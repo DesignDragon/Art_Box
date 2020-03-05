@@ -92,6 +92,7 @@ public class auction extends Fragment {
                         up.setHour(s.get("hour").toString());
                         up.setMin(s.get("min").toString());
                         up.setUploadTime(s.get("uploadTime").toString());
+                        up.setAuctionId(s.getString("auctionId").toString());
                         up.setUid(s.get("uid").toString());
                         auctionData.add(up);
                         Log.d("datap",s.getString("auctionId").toString());

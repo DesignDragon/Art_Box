@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ContentLoadingProgressBar;
 
 import android.Manifest;
 import android.content.Intent;
@@ -48,6 +49,7 @@ public class upload_picture extends AppCompatActivity {
     private ImageView upload;
     private Button submit;
     private EditText description;
+    private ContentLoadingProgressBar pb;
     private byte[] imgData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,11 @@ public class upload_picture extends AppCompatActivity {
         upload= (ImageView) findViewById(R.id.image_store);
         firebaseFirestore= FirebaseFirestore.getInstance();
         storageReference= FirebaseStorage.getInstance().getReference();
+        pb=findViewById(R.id.progress_bar);
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 {
                     if(ContextCompat.checkSelfPermission(upload_picture.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
@@ -83,6 +87,7 @@ public class upload_picture extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final String image_caption=description.getText().toString();
                 if(!TextUtils.isEmpty(image_caption)&&imageUri!=null)
                 {
@@ -100,7 +105,7 @@ public class upload_picture extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
-
+                                pb.setVisibility(View.VISIBLE);
                                 storeData(task);
                                 startActivity(new Intent(upload_picture.this,side_menu.class));
                                 finish();

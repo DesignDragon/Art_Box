@@ -6,6 +6,6 @@
     android:id="@+id/progress_bar"
     style="@style/Widget.AppCompat.ProgressBar"
     android:layout_gravity="center"
-    android:visibility="visible"
+    android:visibility="invisible"
     android:indeterminateDrawable="@drawable/circular_bar">
 </androidx.core.widget.ContentLoadingProgressBar>
