@@ -42,8 +42,8 @@ public class Chats extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.fragment_chats, container, false);
-        pbar=v.findViewById(R.id.progress_bar);
-        pbar.setVisibility(v.VISIBLE);
+        /*pbar=v.findViewById(R.id.progress_bar);
+        pbar.setVisibility(v.VISIBLE);*/
         data=new ArrayList<userProfileData>();
         r=(RecyclerView) v.findViewById(R.id.chat_list_recycler);
         auth=FirebaseAuth.getInstance();

@@ -1,12 +1,14 @@
 package com.example.ArtBox;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ContentLoadingProgressBar;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -35,8 +38,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class upload_picture extends AppCompatActivity {
 
@@ -44,9 +51,9 @@ public class upload_picture extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private String user_id;
     private FirebaseAuth firebaseAuth;
-    private Uri imageUri = null;
+    private Uri imageUri;
     private Bitmap compress;
-    private ImageView upload;
+    private ImageView uploadImg;
     private Button submit;
     private EditText description;
     private ContentLoadingProgressBar pb;
@@ -55,31 +62,18 @@ public class upload_picture extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_picture);
+
+
         firebaseAuth= FirebaseAuth.getInstance();
         user_id= firebaseAuth.getCurrentUser().getUid();
-        upload= (ImageView) findViewById(R.id.image_store);
+        uploadImg= (ImageView) findViewById(R.id.image_store);
         firebaseFirestore= FirebaseFirestore.getInstance();
         storageReference= FirebaseStorage.getInstance().getReference();
         pb=findViewById(R.id.progress_bar);
-        upload.setOnClickListener(new View.OnClickListener() {
+        uploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                {
-                    if(ContextCompat.checkSelfPermission(upload_picture.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-                    {
-                        Toast.makeText(upload_picture.this,"Permission Denied",Toast.LENGTH_LONG).show();
-                        ActivityCompat.requestPermissions(upload_picture.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-                    }
-                    else
-                    {
-                        chooseImage();
-                    }
-                }
-                else {
-                    chooseImage();
-                }
+                chooseImage();
             }
         });
         submit= (Button) findViewById(R.id.upload);
@@ -92,14 +86,6 @@ public class upload_picture extends AppCompatActivity {
                 if(!TextUtils.isEmpty(image_caption)&&imageUri!=null)
                 {
                     File newFile= new File(imageUri.getPath());
-                    /*try {
-                        compress = new Compressor(upload_picture.this).setMaxHeight(125).setMaxWidth(125).setQuality(50).compressToBitmap(newFile);
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    compress.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                     imgData = byteArrayOutputStream.toByteArray();*/
                     UploadTask imgPath = storageReference.child(user_id).child(description.getText().toString() +".jpg").putFile(Uri.fromFile(newFile));
                     imgPath.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -125,12 +111,27 @@ public class upload_picture extends AppCompatActivity {
             try {
                 task.getResult().getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(Uri uri) {
+                    public void onSuccess(final Uri uri) {
 
-                        Map<String, Object> userData = new HashMap<>();
-                        userData.put("url", uri.toString());
-                        userData.put("caption", description.getText().toString());
-                        firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").document(description.getText().toString()).set(userData);
+                        firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                String name=documentSnapshot.getString("username").toString();
+                                Map<String, Object> userData = new HashMap<>();
+                                final String post_id= UUID.randomUUID().toString();
+                                String uploadDate=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                                String uploadTime= String.valueOf(System.currentTimeMillis());
+                                userData.put("url",uri.toString());
+                                userData.put("caption", description.getText().toString());
+                                userData.put("uploadDate",uploadDate);
+                                userData.put("uploadTime",uploadTime);
+                                userData.put("post_id",post_id);
+                                userData.put("username",name);
+                                userData.put("userID",user_id);
+                                firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").document(post_id).set(userData);
+                            }
+                        });
+
                        /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                         db.child("USERS").child(user_id).child("POSTS").child(description.getText().toString()).setValue(userData);*/
                     }
@@ -150,32 +151,53 @@ public class upload_picture extends AppCompatActivity {
 
     public void chooseImage()
     {
-        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).
-                setAspectRatio(1,1).start(upload_picture.this);
+        CropImage.startPickImageActivity(this);
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        upload=(ImageView) findViewById(R.id.image_store);
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        {
+            Uri img=CropImage.getPickImageResultUri(this,data);
+            if(CropImage.isReadExternalStoragePermissionsRequired(this,img))
+            {
+                imageUri=img;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+            else
+                {
+                    startCropImageActivity(img);
+                }
+        }
         if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
             CropImage.ActivityResult result= CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK)
             {
-                imageUri = result.getUri();
-
-                try {
-                    Bitmap b= null;
-                    b = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-                    upload.setImageBitmap(b);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
-            {
-                Exception exception= result.getError();
+                imageUri=result.getUri();
+                uploadImg.setImageURI(result.getUri());
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(imageUri!=null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
+            startCropImageActivity(imageUri);
+        }
+        else{
+            Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startCropImageActivity(Uri u)
+    {
+        CropImage.activity(u)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
+        imageUri=u;
     }
 }

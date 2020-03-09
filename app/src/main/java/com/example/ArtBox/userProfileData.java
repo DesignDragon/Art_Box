@@ -22,8 +22,7 @@ public class userProfileData {
     public String getUsername() {
         return username;
     }
-    public String getId(){return id;}
-   /* public void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -42,5 +41,4 @@ public class userProfileData {
     public void setId(String id) {
         this.id = id;
     }
-*/
 }

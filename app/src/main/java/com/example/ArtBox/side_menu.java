@@ -11,21 +11,35 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 public class side_menu extends AppCompatActivity {
     BottomNavigationView bottomappbar;
     NavigationView nav;
     Fragment f=null;
     DrawerLayout d;
+    CircularImageView profile;
+    TextView name;
+    FirebaseAuth auth;
+    FirebaseFirestore db;
+    View header;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
+
         Toolbar toolbar=(Toolbar) findViewById(R.id.top_bar);
         d=(DrawerLayout) findViewById(R.id.side_menu);
         setSupportActionBar(toolbar);
@@ -66,6 +80,7 @@ public class side_menu extends AppCompatActivity {
 
 
         bottomappbar = (BottomNavigationView) findViewById(R.id.btm_view);
+
         bottomappbar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -81,10 +96,10 @@ public class side_menu extends AppCompatActivity {
                                 break;
                             case R.id.camera:
                                 f= new camera();
+                                bottomappbar.setVisibility(View.GONE);
                                 break;
                             case R.id.add_picture:
                                 startActivity(new Intent(side_menu.this, upload_picture.class));
-                                finish();
                             case R.id.message_box:
                                 f= new Message();
                                 break;
@@ -93,6 +108,30 @@ public class side_menu extends AppCompatActivity {
                     }
                 }
         );
+
+        if(savedInstanceState==null)
+        {
+            bottomappbar.setSelectedItemId(R.id.home);
+        }
+
+
+        header= nav.getHeaderView(0);
+        name=(TextView) header.findViewById(R.id.current_name);
+        profile=(CircularImageView) header.findViewById(R.id.prof_pic);
+        auth=FirebaseAuth.getInstance();
+        String uid=auth.getUid().toString();
+
+        db=FirebaseFirestore.getInstance();
+        db.collection("USERS").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String username=documentSnapshot.getString("username");
+                String profile_pic=documentSnapshot.getString("url").toString();
+                Log.d("name",username);
+                Glide.with(side_menu.this).load(profile_pic).into(profile);
+                name.setText(username);
+            }
+        });
 
         /*viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

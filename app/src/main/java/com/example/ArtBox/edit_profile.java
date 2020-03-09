@@ -1,11 +1,13 @@
 package com.example.ArtBox;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -76,21 +78,7 @@ public class edit_profile extends AppCompatActivity {
         change_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                {
-                    if(ContextCompat.checkSelfPermission(edit_profile.this, Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-                    {
-                        Toast.makeText(edit_profile.this,"Permission Denied",Toast.LENGTH_LONG).show();
-                        ActivityCompat.requestPermissions(edit_profile.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-                    }
-                    else
-                    {
-                        chooseImage();
-                    }
-                }
-                else {
-                    chooseImage();
-                }
+                chooseImage();
             }
         });
 
@@ -165,30 +153,53 @@ public class edit_profile extends AppCompatActivity {
 
     public void chooseImage()
     {
-        CropImage.activity().setGuidelines(CropImageView.Guidelines.ON).setAspectRatio(1,1).start(edit_profile.this);
+        CropImage.startPickImageActivity(this);
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
+        {
+            Uri img=CropImage.getPickImageResultUri(this,data);
+            if(CropImage.isReadExternalStoragePermissionsRequired(this,img))
+            {
+                imageUri=img;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+            }
+            else
+            {
+                startCropImageActivity(img);
+            }
+        }
         if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
             CropImage.ActivityResult result= CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK)
             {
-                imageUri = result.getUri();
-
-                try {
-                    Bitmap b= null;
-                    b = MediaStore.Images.Media.getBitmap(getContentResolver(),imageUri);
-                    change_picture.setImageBitmap(b);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
-            {
-                Exception exception= result.getError();
+                imageUri=result.getUri();
+                change_picture.setImageURI(result.getUri());
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(imageUri!=null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        {
+            startCropImageActivity(imageUri);
+        }
+        else{
+            Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startCropImageActivity(Uri u)
+    {
+        CropImage.activity(u)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
+        imageUri=u;
     }
 }

@@ -32,7 +32,8 @@
             android:textAlignment="center"
             app:itemIconSize="35dp"
             app:itemTextColor="@color/text_color"
-            tools:ignore="RtlCompat">
+            tools:ignore="RtlCompat"
+            app:headerLayout="@layout/sidemenu_header">
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>

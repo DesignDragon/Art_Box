@@ -19,11 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:boxCornerRadiusTopEnd="25dp"
         app:boxCornerRadiusBottomStart="25dp"
+        android:padding="8dp"
         android:hint="EMAIL ADDRESS"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColorHint="#FFFFFF"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:background="@drawable/edittext_design"/>
 
     <EditText
         android:id="@+id/pass"
@@ -39,17 +41,21 @@
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textColorHint="#FFFFFF"
+        android:background="@drawable/edittext_design"
+        android:padding="8dp"
         android:textSize="20dp"/>
-    <ImageView
+    <Button
         android:id="@+id/login"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="160dp"
-        android:src="@drawable/signin"
+        android:text="SINGN IN"
+        android:textSize="25sp"
+        android:background="@drawable/button_design"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass" />
+        app:layout_constraintTop_toBottomOf="@id/pass" />
 
     <TextView
         android:id="@+id/signup"

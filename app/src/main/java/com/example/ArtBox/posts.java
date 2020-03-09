@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +55,7 @@ public class posts extends Fragment {
         if(getArguments()!=null)
         {
             final String id=getArguments().getString("data");
-            firebaseFirestore.collection("USERS").document(id).collection("POSTS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            firebaseFirestore.collection("USERS").document(id).collection("POSTS").orderBy("uploadDate").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     upload_post.clear();

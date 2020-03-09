@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ public class sign_in extends AppCompatActivity {
     private FirebaseAuth authenticate;
     private EditText Editemail;
     private EditText Editpass;
-    private ImageView login;
+    private Button login;
     private TextView signup;
     private String email="";
     private String pass="";

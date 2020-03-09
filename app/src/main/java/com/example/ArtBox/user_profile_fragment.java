@@ -46,6 +46,7 @@ public class user_profile_fragment extends Fragment {
     private TextView followers;
     private TextView following;
     private TextView following_num;
+    private TextView post_count;
     private ContentLoadingProgressBar pbar;
     public user_profile_fragment() {
         // Required empty public constructor
@@ -75,7 +76,7 @@ public class user_profile_fragment extends Fragment {
         editB=(Button) v.findViewById(R.id.edit_profile);
         following=(TextView) v.findViewById(R.id.following);
         following_num=(TextView) v.findViewById(R.id.following_count);
-
+        post_count=(TextView) v.findViewById(R.id.post_count);
         /*Checking for searched user data after clicking on the username in search tab.
           If the user id is there its profile will be visible else current logged in user profile will be visible
           */
@@ -118,6 +119,14 @@ public class user_profile_fragment extends Fragment {
                         }
                     });
 
+                    /*Displaying no of posts of searched user*/
+                    firebaseFirestore.collection("USERS").document(search_id).collection("POSTS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            post_count.setText(String.valueOf(queryDocumentSnapshots.size()));
+                        }
+                    });
+
 
                     /*checking if the current user has followed the searched user or not
                     * if the user is followed by the curent user the button text is changed to unfollow else follow*/
@@ -145,7 +154,7 @@ public class user_profile_fragment extends Fragment {
                                 data.put("username",username);
                                 data.put("id",search_id);
                                 data.put("url",profile);
-                                firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").document(username).set(data);
+                                firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").document(search_id).set(data);
 
                             }
                         });
@@ -174,6 +183,15 @@ public class user_profile_fragment extends Fragment {
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     following_num.setText(String.valueOf(queryDocumentSnapshots.size()));
                     Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
+                }
+            });
+
+
+            /*Displaying no of posts by user*/
+            firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    post_count.setText(String.valueOf(queryDocumentSnapshots.size()));
                 }
             });
 

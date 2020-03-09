@@ -51,6 +51,8 @@ public class user_post_adapter extends RecyclerView.Adapter<user_post_adapter.po
                 context.startActivity(i);*/
                 Bundle b=new Bundle();
                 b.putString("post",post_data.get(position).getUrl());
+                b.putString("id",post_data.get(position).getUserID());
+                b.putString("post_id",post_data.get(position).getPost_id());
                 enlarge_post_fragment f=new enlarge_post_fragment();
                 f.setArguments(b);
 

@@ -24,27 +24,26 @@
         android:layout_marginTop="25dp"
         android:layout_gravity="center">
     </ImageView>
-
     <ImageButton
-        android:id="@+id/post_likes"
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:id="@+id/like_post"
         android:layout_below="@id/enlarge_posts"
-        android:layout_gravity="bottom"
+        android:src="@drawable/dislike"
         android:backgroundTint="@color/bar_color"
-        android:src="@drawable/like"
-        android:layout_marginStart="25dp">
-    </ImageButton>
-
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp"
+        />
     <ImageButton
         android:id="@+id/send_auction"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_below="@id/enlarge_posts"
         android:layout_gravity="bottom"
-        android:layout_marginStart="100dp"
         android:backgroundTint="@color/bar_color"
-        android:src="@drawable/add_auction">
+        android:layout_toRightOf="@id/like_post"
+        android:src="@drawable/add_auction"
+        android:layout_toEndOf="@id/like_post">
     </ImageButton>
 </RelativeLayout>
 </androidx.cardview.widget.CardView>

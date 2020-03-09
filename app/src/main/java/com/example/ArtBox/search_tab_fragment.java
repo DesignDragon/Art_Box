@@ -76,12 +76,13 @@ public class search_tab_fragment extends Fragment {
                     System.err.println("No User Found!!!");
                     return;
                 }
+
+                adapter.notifyDataSetChanged();
                 for (DocumentSnapshot doc : queryDocumentSnapshots) {
                     userProfileData user = doc.toObject(userProfileData.class);
                     Log.d("key", user.getUsername());
                     user_data.add(user);
                 }
-                adapter.notifyDataSetChanged();
             }
         });
         adapter = new list_adapter(user_data,getContext());
