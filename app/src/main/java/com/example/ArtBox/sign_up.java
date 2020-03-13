@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,7 +45,8 @@ public class sign_up extends AppCompatActivity {
     private EditText EditName;
     private EditText Editemail;
     private EditText Editpass;
-    private ImageView s_up;
+
+    private Button s_up;
     private ImageView setProfile;
     Uri imageUri=null;
     private Bitmap compress;

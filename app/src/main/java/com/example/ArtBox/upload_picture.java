@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.icu.text.DateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -114,13 +115,14 @@ public class upload_picture extends AppCompatActivity {
                     public void onSuccess(final Uri uri) {
 
                         firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 String name=documentSnapshot.getString("username").toString();
                                 Map<String, Object> userData = new HashMap<>();
                                 final String post_id= UUID.randomUUID().toString();
                                 String uploadDate=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                                String uploadTime= String.valueOf(System.currentTimeMillis());
+                                String uploadTime= DateFormat.getDateTimeInstance().format(new Date());
                                 userData.put("url",uri.toString());
                                 userData.put("caption", description.getText().toString());
                                 userData.put("uploadDate",uploadDate);

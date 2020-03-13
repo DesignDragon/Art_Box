@@ -21,6 +21,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.annotation.Nullable;
 
@@ -66,6 +68,13 @@ public class home_screen_fragment extends Fragment {
                                 Log.d("capts",user.getCaption());
                                 user_list.add(user);
                             }
+                            Collections.sort(user_list, new Comparator<userPosts>() {
+                                @Override
+                                public int compare(userPosts o1, userPosts o2) {
+                                    return o1.getUploadTime().compareTo(o2.getUploadTime());
+                                }
+                            });
+                            Collections.reverse(user_list);
                             adapter.update(user_list);
                             adapter.notifyDataSetChanged();
                         }

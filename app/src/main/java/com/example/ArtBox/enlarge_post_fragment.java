@@ -1,7 +1,9 @@
 package com.example.ArtBox;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,7 +30,9 @@ public class enlarge_post_fragment extends DialogFragment {
     private FirebaseAuth firebaseAuth;
     private String user_id;
     private ImageButton like;
+    private ImageButton delete;
     private FirebaseFirestore firebaseFirestore;
+    AlertDialog.Builder builder;
     public enlarge_post_fragment() {
         // Required empty public constructor
     }
@@ -43,7 +48,9 @@ public class enlarge_post_fragment extends DialogFragment {
         View v= inflater.inflate(R.layout.fragment_enlarge_post_fragment, container, false);
         img=(ImageView) v.findViewById(R.id.enlarge_posts);
         like=(ImageButton) v.findViewById(R.id.like_post);
-       /* Intent i=getIntent();
+        delete=(ImageButton) v.findViewById(R.id.delete_post);
+        builder=new AlertDialog.Builder(getContext());
+        /* Intent i=getIntent();
         final String post=i.getExtras().getString("post");*/
        final String post=getArguments().getString("post");
        final String id=getArguments().getString("id");
@@ -98,9 +105,34 @@ public class enlarge_post_fragment extends DialogFragment {
                     dismiss();
                 }
             });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    builder.setMessage("Are you sure you want to delete?").
+                            setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").document(post_id).delete();
+                                    Toast.makeText(getContext(),"Post deleted Successfully",Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert=builder.create();
+                    alert.setTitle("Log out?");
+                    alert.show();
+                }
+            });
         }
         else{
             auct.setVisibility(View.GONE);
+            delete.setVisibility(View.GONE);
         }
 
         return v;

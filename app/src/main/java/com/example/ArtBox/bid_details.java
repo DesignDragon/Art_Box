@@ -17,6 +17,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import static java.util.Collections.*;
 
 
 public class bid_details extends Fragment {
@@ -49,18 +53,28 @@ public class bid_details extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for(QueryDocumentSnapshot s:queryDocumentSnapshots)
                 {
+
                     biddersDetails details=s.toObject(biddersDetails.class);
                     details.setBid_amount(s.get("bid_amount").toString());
                     details.setBidder_name(s.get("bidder_name").toString());
+                    details.setTime(s.get("time").toString());
                     Log.d("amt",s.get("bid_amount").toString());
                     Log.d("amt",s.get("bidder_name").toString());
                     bid_data.add(details);
+                    Collections.sort(bid_data, new Comparator<biddersDetails>() {
+                        @Override
+                        public int compare(biddersDetails o1, biddersDetails o2) {
+                            return o1.getBid_amount().compareTo(o2.getBid_amount()) ;
+                        }
+                    });
+                    Collections.reverse(bid_data);
                 }
                 //adapter.update(bid_data);
                 adapter.notifyDataSetChanged();
             }
         });
         rv = (RecyclerView) v.findViewById(R.id.bid_details_recycler);
+
         adapter = new bidderAdapter(bid_data,getFragmentManager(),getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(layoutManager);

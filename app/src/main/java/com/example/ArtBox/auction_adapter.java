@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,7 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
     private CountDownTimer countDownTimer;
     private Boolean timerRunning;
     private Context context;
+    private FirebaseFirestore firebaseFirestore;
 //    private long endTime;
 //    private long timeLeft;
 //    private long startTime;
@@ -71,10 +73,11 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
         Glide.with(holder.itemView).setDefaultRequestOptions(requestOptions).load(data.get(position).getUrl()).into(holder.post);
 
 //                .setDefaultRequestOptions(requestOptions)
-        holder.details.setText(data.get(position).getDetails());
-        holder.price.setText(data.get(position).getPrice());
+        holder.details.setText(data.get(position).getTitle());
+        holder.price.setText("₹"+data.get(position).getPrice());
         upTime=Long.parseLong(data.get(position).getUploadTime());
         tPassed=System.currentTimeMillis() - upTime;
+        firebaseFirestore=FirebaseFirestore.getInstance();
         final long tLeft=(Long.parseLong(data.get(position).getHour())*3600000 + Long.parseLong(data.get(position).getMin())*60000)-tPassed;
         countDownTimer = new CountDownTimer(tLeft,1000) {
             @Override
@@ -90,8 +93,8 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
             public void onFinish() {
                 if(tLeft<0)
                 {
-                    final String msg="Finished";
-                    holder.hour.setText(msg);
+                    firebaseFirestore.collection("USERS").document(data.get(position).getUid()).
+                            collection("AUCTION").document(data.get(position).getAuctionId()).delete();
                 }
             }
         }.start();
@@ -117,6 +120,7 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
                     bundle.putString("auction_id",data.get(position).getAuctionId());
                     bundle.putString("auctPost",data.get(position).getUrl().toString());
                     bundle.putString("auctInitialPrice",data.get(position).getPrice().toString());
+                    bundle.putString("auctTitle",data.get(position).getTitle().toString());
                     bundle.putString("auctionDesc",data.get(position).getDetails().toString());
                     bundle.putString("bidder_uid",biddeer_uid);
                     bundle.putString("user_id",user_id);

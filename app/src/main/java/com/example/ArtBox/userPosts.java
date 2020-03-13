@@ -3,6 +3,15 @@ public class userPosts {
     private String url;
     private String caption;
 
+    public String getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(String uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    private String uploadTime;
     public String getPost_id() {
         return post_id;
     }

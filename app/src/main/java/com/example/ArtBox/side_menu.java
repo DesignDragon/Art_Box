@@ -3,12 +3,14 @@ package com.example.ArtBox;
 import
         androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +37,7 @@ public class side_menu extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseFirestore db;
     View header;
+    AlertDialog.Builder builder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,8 @@ public class side_menu extends AppCompatActivity {
             }
         });*/
 
+        builder=new AlertDialog.Builder(this);
+
         nav=(NavigationView)findViewById(R.id.left_menu);
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
@@ -70,7 +75,23 @@ public class side_menu extends AppCompatActivity {
                         f=new auction_panel_fragment();
                         break;
                     case R.id.logout:
-                        logout();
+                        builder.setMessage("Are you sure you want to log out?").
+                                setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        logout();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert=builder.create();
+                        alert.setTitle("Log out?");
+                        alert.show();
                 }
                 d.closeDrawer(GravityCompat.START);
                 return loadFragment(f);

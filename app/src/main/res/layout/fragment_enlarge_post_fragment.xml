@@ -45,5 +45,14 @@
         android:src="@drawable/add_auction"
         android:layout_toEndOf="@id/like_post">
     </ImageButton>
+    <ImageButton
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:id="@+id/delete_post"
+        android:layout_below="@id/enlarge_posts"
+        android:layout_gravity="bottom"
+        android:backgroundTint="@color/bar_color"
+        android:layout_toEndOf="@id/send_auction"
+        android:src="@drawable/delete"/>
 </RelativeLayout>
 </androidx.cardview.widget.CardView>

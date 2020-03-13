@@ -38,6 +38,23 @@
             android:layout_gravity="center"
             android:src="@drawable/camera" />
     </androidx.cardview.widget.CardView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:id="@+id/auct_title"
+                android:textColorHint="@color/text_color"
+                android:textColor="@color/text_color"
+                android:textSize="25sp"
+                android:layout_below="@id/card"
+                android:inputType="text"
+                android:backgroundTint="@color/bg_color"
+                android:layout_marginTop="25dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
+                android:padding="8dp"/>
        <EditText
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
@@ -46,14 +63,15 @@
            android:layout_marginTop="25dp"
            android:textColorHint="@color/text_color"
            android:textColor="@color/text_color"
-           android:textSize="25dp"
+           android:textSize="25sp"
            android:inputType="textMultiLine"
            android:backgroundTint="@color/bg_color"
            android:layout_alignParentStart="true"
            android:layout_alignParentEnd="true"
            android:layout_marginStart="50dp"
            android:layout_marginEnd="50dp"
-           android:layout_below="@id/card">
+           android:layout_below="@id/auct_title"
+           android:padding="8dp">
        </EditText>
 
        <EditText
@@ -66,12 +84,13 @@
            android:layout_marginTop="25dp"
            android:layout_marginStart="50dp"
            android:layout_marginEnd="50dp"
-           android:textSize="25dp"
+           android:textSize="25sp"
            android:layout_alignParentStart="true"
            android:layout_alignParentEnd="true"
            android:textColorHint="@color/text_color"
            android:textColor="@color/text_color"
-           android:backgroundTint="@color/bg_color">
+           android:backgroundTint="@color/bg_color"
+           android:padding="8dp">
        </EditText>
             <TextView
                 android:layout_width="wrap_content"
@@ -100,7 +119,7 @@
                     android:inputType="number"
                     android:backgroundTint="@color/bg_color"
                     android:textColor="@color/text_color"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:layout_marginStart="100dp"
                     android:layout_marginTop="20dp">
                 </EditText>
@@ -113,7 +132,7 @@
                     android:inputType="number"
                     android:backgroundTint="@color/bg_color"
                     android:textColor="@color/text_color"
-                    android:textSize="50dp"
+                    android:textSize="50sp"
                     android:layout_marginTop="20dp">
                 </EditText>
             </LinearLayout>

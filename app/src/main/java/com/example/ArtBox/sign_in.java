@@ -22,6 +22,7 @@ public class sign_in extends AppCompatActivity {
     private FirebaseAuth authenticate;
     private EditText Editemail;
     private EditText Editpass;
+    private TextView forgot;
     private Button login;
     private TextView signup;
     private String email="";
@@ -35,10 +36,19 @@ public class sign_in extends AppCompatActivity {
         login=findViewById(R.id.login);
         Editemail=(EditText) findViewById(R.id.emailid);
         Editpass=(EditText) findViewById(R.id.pass);
+        forgot=(TextView) findViewById(R.id.forgot);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 login_user();
+            }
+        });
+
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authenticate.setLanguageCode("en");
+                authenticate.sendPasswordResetEmail(Editemail.getText().toString());
             }
         });
 

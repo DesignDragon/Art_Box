@@ -24,6 +24,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class home_adapter extends RecyclerView.Adapter<home_adapter.MyViewHolder> {
@@ -38,20 +40,29 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.MyViewHolder
         this.c=context;
         this.post_data=data;
         this.fragmentManager=fragmentManager;
+        Collections.sort(post_data, new Comparator<userPosts>() {
+            @Override
+            public int compare(userPosts o1, userPosts o2) {
+                return o1.getUploadTime().compareTo(o2.getUploadTime());
+            }
+        });
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;
         public TextView name;
         public TextView caption;
-        public ImageButton like;
+        public ImageView like;
         public TextView like_count;
+        public TextView date;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            date=(TextView) itemView.findViewById(R.id.home_date);
             img=(ImageView) itemView.findViewById(R.id.home_img);
             name=(TextView) itemView.findViewById(R.id.home_uname);
             caption=(TextView) itemView.findViewById(R.id.home_caption);
-            like=(ImageButton) itemView.findViewById(R.id.like);
+            like=(ImageView) itemView.findViewById(R.id.like);
             like_count=(TextView) itemView.findViewById(R.id.like_count);
+
         }
     }
     @NonNull
@@ -66,7 +77,7 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.MyViewHolder
         holder.name.setText(post_data.get(position).getUsername());
         Glide.with(holder.itemView).load(post_data.get(position).getUrl()).into(holder.img);
         holder.caption.setText(post_data.get(position).getCaption());
-
+        holder.date.setText(post_data.get(position).getUploadTime());
         firebaseFirestore= FirebaseFirestore.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         user_id=firebaseAuth.getUid().toString();
@@ -84,6 +95,20 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.MyViewHolder
                     {
                         holder.like.setImageResource(R.drawable.like);
                     }
+                }
+            }
+        });
+        firebaseFirestore.collection("USERS").document(uploader_id).
+                collection("POSTS").document(post_id).
+                collection("LIKES").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot s:queryDocumentSnapshots)
+                {
+                    if(s.getString("id").equals(user_id))
+                        holder.like.setImageResource(R.drawable.like);
+                    else
+                        holder.like.setImageResource(R.drawable.dislike);
                 }
             }
         });

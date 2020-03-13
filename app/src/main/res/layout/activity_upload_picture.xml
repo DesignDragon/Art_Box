@@ -4,76 +4,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".upload_picture"
-    android:background="@color/bg_color">
+    android:background="@color/bg_color"
+    tools:context=".upload_picture">
+
     <androidx.cardview.widget.CardView
+        android:id="@+id/imagecard"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imagecard"
-        app:cardBackgroundColor="@color/bar_color"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="300dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="200dp"
+        app:cardBackgroundColor="@color/bar_color"
         app:cardCornerRadius="20dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/image_store"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/gallery"
+            android:layout_height="300dp"
             android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp">
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/gallery">
         </ImageView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_store"
+            android:layout_marginBottom="25dp"
+            android:text="SELECT IMAGE"
+            android:gravity="center"
+            android:textSize="25sp"/>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/caption"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginEnd="30dp"
-        app:cardBackgroundColor="@color/bar_color"
-        app:cardCornerRadius="20dp"
+        android:layout_alignTop="@id/imagecard"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@id/imagecard">
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="450dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="@color/bar_color"
+        app:cardCornerRadius="20dp">
+
         <EditText
+            android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Description"
-            android:id="@+id/description"
-            android:textColor="@color/text_color"
-            android:background="@color/bar_color"
             android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/bar_color"
+            android:hint="Description"
+            android:textColor="@color/text_color">
         </EditText>
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/upload"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/caption"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="150dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="100dp"
         android:background="@drawable/button_design"
         android:text="UPLOAD"
-        android:textStyle="bold"
-        android:textColor="@color/bg_color">
+        android:textColor="@color/bg_color"
+        android:textStyle="bold">
     </Button>
+
     <include
         layout="@layout/fragment_progress_bar"
-        android:layout_height="100dp"
         android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"/>
+        android:layout_marginTop="300dp" />
 </RelativeLayout>

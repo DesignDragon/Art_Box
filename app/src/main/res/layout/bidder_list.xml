@@ -3,38 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="?actionBarSize"
-            android:text="Bidder Name"
-            android:textSize="20sp"
-            android:background="@color/bar_color"
-            android:padding="8dp"
-            android:gravity="center">
-        </TextView>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:text="Bid Placed"
-            android:textSize="20sp"
-            android:padding="8dp"
-            android:background="@color/bar_color"
-            android:gravity="center">
-        </TextView>
-    </LinearLayout>
-    <LinearLayout
+
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal">
+        android:columnCount="3">
         <TextView
             android:id="@+id/bidder_name"
             android:textColor="@color/text_color"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
             android:text="TextView"
             android:layout_gravity="center"
             android:textSize="18sp"
@@ -42,11 +20,21 @@
         <TextView
             android:id="@+id/price_placed"
             android:textColor="@color/text_color"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="TextView"
             android:layout_gravity="center"
             android:textSize="18sp"
             android:gravity="center"/>
-    </LinearLayout>
+        <TextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:id="@+id/time_placed"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_gravity="center">
+        </TextView>
+    </GridLayout>
 </LinearLayout>

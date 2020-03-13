@@ -4,6 +4,16 @@ public class auctionPosts {
     private String uid;
     private String post;
     private String details;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    private String title;
     private String price;
     private String hour;
     private String uploadTime;

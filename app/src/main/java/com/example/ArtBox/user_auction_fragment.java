@@ -30,6 +30,7 @@ public class user_auction_fragment extends Fragment {
     EditText hr;
     EditText min;
     Button submit;
+    EditText title;
     FirebaseFirestore firebaseFirestore;
     private String user_id;
     private FirebaseAuth firebaseAuth;
@@ -47,13 +48,14 @@ public class user_auction_fragment extends Fragment {
         i=(ImageView) v.findViewById(R.id.img_auct);
         final String post_auct=getArguments().getString("auct");
         Glide.with(v.getContext()).load(post_auct).into(i);
+        title=(EditText) v.findViewById(R.id.auct_title);
         desc=(EditText) v.findViewById(R.id.auct_desc);
         price=(EditText) v.findViewById(R.id.init_price);
 //        final String info=desc.getText().toString();
 //        final String amt=price.getText().toString();
 
         hr=(EditText) v.findViewById(R.id.hour);
-        hr.setFilters(new InputFilter[]{new MinMaxHour("1","7")});
+        hr.setFilters(new InputFilter[]{new MinMaxHour("0","7")});
         min=(EditText) v.findViewById(R.id.minute);
         min.setFilters(new InputFilter[]{new MinMaxMinute("0","59")});
         final String current_time= String.valueOf(System.currentTimeMillis());
@@ -67,6 +69,7 @@ public class user_auction_fragment extends Fragment {
                     //data.put("image",post_auct.toString());
                     data.put("uid",user_id.toString());
                     data.put("post",post_auct);
+                    data.put("title",title.getText().toString());
                     data.put("details",desc.getText().toString());
                     data.put("price",price.getText().toString());
                     data.put("hour",hr.getText().toString());
