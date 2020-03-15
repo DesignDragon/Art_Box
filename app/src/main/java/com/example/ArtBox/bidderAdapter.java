@@ -43,7 +43,6 @@ public class bidderAdapter extends RecyclerView.Adapter<bidderAdapter.bidderHold
         holder.bidder_name.setText(data.get(position).getBidder_name());
         holder.bid.setText("₹"+data.get(position).getBid_amount());
         holder.time.setText(data.get(position).getTime());
-
     }
 
     @Override

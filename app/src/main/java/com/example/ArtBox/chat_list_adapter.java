@@ -38,7 +38,11 @@ public class chat_list_adapter extends RecyclerView.Adapter<chat_list_adapter.Vi
     @Override
     public void onBindViewHolder(@NonNull chat_list_adapter.ViewHolder holder, final int position) {
         holder.txt.setText(data_set.get(position).getUsername());
-        Glide.with(context).load(data_set.get(position).getUrl()).into(holder.imageView);
+        String prof=data_set.get(position).getUrl();
+        if(prof==null)
+            Glide.with(context).load(R.drawable.profile2).into(holder.imageView);
+        else
+            Glide.with(context).load(prof).into(holder.imageView);
         final String uid=data_set.get(position).getId();
         holder.txt.setOnClickListener(new View.OnClickListener() {
             @Override

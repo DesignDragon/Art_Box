@@ -72,7 +72,7 @@ public class side_menu extends AppCompatActivity {
 
                         break;
                     case R.id.auct_panel:
-                        f=new auction_panel_fragment();
+                        f=new auction_history();
                         break;
                     case R.id.logout:
                         builder.setMessage("Are you sure you want to log out?").
@@ -147,9 +147,12 @@ public class side_menu extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 String username=documentSnapshot.getString("username");
-                String profile_pic=documentSnapshot.getString("url").toString();
+                String profile_pic= documentSnapshot.getString("url");
                 Log.d("name",username);
-                Glide.with(side_menu.this).load(profile_pic).into(profile);
+                if(profile_pic==null)
+                    Glide.with(side_menu.this).load(R.drawable.profile2).into(profile);
+                else
+                    Glide.with(side_menu.this).load(profile_pic).into(profile);
                 name.setText(username);
             }
         });

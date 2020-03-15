@@ -100,6 +100,18 @@ public class bidding extends Fragment {
                         collection("AUCTION").document(ItemId).
                         collection("BIDDERS").document(bidder_uid).set(data);
                 Toast.makeText(getContext(),"Bid placed successfully",Toast.LENGTH_LONG).show();
+
+                Map<String,Object> data1=new HashMap<>();
+                data1.put("title",getArguments().getString("auctionDesc").toString());
+                data1.put("details",getArguments().getString("auctTitle").toString());
+                data1.put("post",getArguments().getString("auctPost").toString());
+                data1.put("uploadDate",getArguments().getString("upload_date") );
+                data1.put("uploadTime",getArguments().getString("upload_time"));
+                data1.put("hour",getArguments().getString("hour"));
+                data1.put("min",getArguments().getString("min"));
+                data1.put("auctionId",ItemId);
+                data1.put("uid",user_id);
+                firebaseFirestore.collection("USERS").document(bidder_uid).collection("AUCTHISTORY").document(ItemId).set(data1);
             }
         });
         list.setOnClickListener(new View.OnClickListener() {

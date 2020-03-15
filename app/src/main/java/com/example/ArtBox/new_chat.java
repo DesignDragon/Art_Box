@@ -71,7 +71,11 @@ public class new_chat extends Fragment {
 
         img=(CircularImageView) v.findViewById(R.id.chat_img);
         uname=(TextView) v.findViewById(R.id.chat_name);
-        Glide.with(getContext()).load(getArguments().getString("cimg").toString()).into(img);
+        String uprof=getArguments().getString("cimg");
+        if(uprof==null)
+            Glide.with(getContext()).load(R.drawable.profile2).into(img);
+        else
+            Glide.with(getContext()).load(uprof).into(img);
         uname.setText(getArguments().getString("cname").toString());
 
         auth=FirebaseAuth.getInstance();

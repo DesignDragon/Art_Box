@@ -1,7 +1,10 @@
 package com.example.ArtBox;
 
+import android.icu.text.DateFormat;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputFilter;
@@ -18,7 +21,10 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -63,10 +69,12 @@ public class user_auction_fragment extends Fragment {
         submit=(Button) v.findViewById(R.id.submit_auct);
         try{
             submit.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View v) {
                     Map<String,Object> data=new HashMap<>();
                     //data.put("image",post_auct.toString());
+                    String uploadDate= DateFormat.getDateTimeInstance().format(new Date());
                     data.put("uid",user_id.toString());
                     data.put("post",post_auct);
                     data.put("title",title.getText().toString());
@@ -76,6 +84,7 @@ public class user_auction_fragment extends Fragment {
                     data.put("min",min.getText().toString());
                     data.put("uploadTime",current_time);
                     data.put("auctionId",auction_id);
+                    data.put("uploadDate",uploadDate);
                    firebaseFirestore.collection("USERS").document(user_id).collection("AUCTION").document(auction_id).set(data);
                    getFragmentManager().beginTransaction().replace(R.id.frag_container,new user_profile_fragment()).addToBackStack(null).commit();
                 }

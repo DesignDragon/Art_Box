@@ -5,6 +5,16 @@ public class auctionPosts {
     private String post;
     private String details;
 
+    public String getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    private String uploadDate;
+
     public String getTitle() {
         return title;
     }

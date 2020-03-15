@@ -87,8 +87,11 @@ public class user_profile_fragment extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     final String username=documentSnapshot.getString("username");
-                    final String profile=documentSnapshot.getString("url").toString();
-                    Glide.with(getContext()).load(profile).into(setProfile);
+                    final String profile=documentSnapshot.getString("url");
+                    if(profile==null)
+                        Glide.with(getContext()).load(R.drawable.profile2).into(setProfile);
+                    else
+                        Glide.with(getContext()).load(profile).into(setProfile);
                     user.setText(username);
                     Log.d("searchedId","found");
 
@@ -198,9 +201,12 @@ public class user_profile_fragment extends Fragment {
             firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    String username=documentSnapshot.getString("username");
-                    String profile=documentSnapshot.getString("url").toString();
-                    Glide.with(getContext()).load(profile).into(setProfile);
+                    String username=documentSnapshot.getString("username").toString();
+                    String profile=documentSnapshot.getString("url");
+                    if(profile==null)
+                        Glide.with(getContext()).load(R.drawable.profile2).into(setProfile);
+                    else
+                        Glide.with(getContext()).load(profile).into(setProfile);
                     user.setText(username);
                     ViewPager viewPager= v.findViewById(R.id.viewPager);
                     viewPager.setAdapter(new viewPager_adapter(getChildFragmentManager()));

@@ -68,6 +68,7 @@ public class auction extends Fragment {
                         up.setUid(s.get("uid").toString());
                         up.setAuctionId(s.getString("auctionId").toString());
                         up.setTitle(s.getString("title").toString());
+                        up.setUploadDate(s.get("uploadDate").toString());
                         auctionData.add(up);
                         Log.d("data",auctionData.get(0).getPrice());
                     }
@@ -96,8 +97,9 @@ public class auction extends Fragment {
                         up.setAuctionId(s.getString("auctionId").toString());
                         up.setUid(s.get("uid").toString());
                         up.setTitle(s.get("title").toString());
+                        up.setUploadDate(s.get("uploadDate").toString());
                         auctionData.add(up);
-                        Log.d("datap",s.getString("auctionId").toString());
+                        Log.d("datap",s.getString("uploadDate").toString());
                     }
                     auctionAdapter.update(auctionData);
                     auctionAdapter.notifyDataSetChanged();

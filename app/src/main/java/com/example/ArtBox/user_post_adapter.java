@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class user_post_adapter extends RecyclerView.Adapter<user_post_adapter.post_view_holder> {
 
@@ -32,6 +34,12 @@ public class user_post_adapter extends RecyclerView.Adapter<user_post_adapter.po
     {
         post_data=data;
         this.fragmentManager=fragmentManager;
+        Collections.sort(data, new Comparator<userPosts>() {
+            @Override
+            public int compare(userPosts o1, userPosts o2) {
+                return o1.getUploadTime().compareTo(o2.getUploadTime());
+            }
+        });
     };
     @NonNull
     @Override

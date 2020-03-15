@@ -47,11 +47,7 @@ public class sign_up extends AppCompatActivity {
     private EditText Editpass;
 
     private Button s_up;
-    private ImageView setProfile;
-    Uri imageUri=null;
-    private Bitmap compress;
     Context context;
-    private byte[] imgData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,26 +81,12 @@ public class sign_up extends AppCompatActivity {
         String email=temail;
         id=FirebaseAuth.getInstance().getUid();
 
-        Uri u=Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getResources().getResourcePackageName(R.drawable.profile)+'/'+getResources().getResourceTypeName(R.drawable.profile)+'/'+getResources().getResourceEntryName(R.drawable.profile) );
-        if(u!=null) {
-            File newFile = new File(u.getPath());
-            UploadTask imgPath = storageReference.child(id).child("profile.jpg").putFile(u);
-            imgPath.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        Log.d("store","image stored");
-                    }
-                }
-            });
-        }
 
         context=getApplicationContext();
         Map<String, Object> user=new HashMap<>();
         user.put(USERNAME,name);
         user.put(EMAIL,email);
         user.put(UID,id);
-        user.put(url,u.toString());
         DocumentReference DocRef=db.collection("USERS").document(id);
         DocRef.set(user);
         /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();

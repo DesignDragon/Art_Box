@@ -70,7 +70,11 @@ public class edit_profile extends AppCompatActivity {
         firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Glide.with(getApplicationContext()).load(documentSnapshot.getString("url").toString()).into(change_picture);
+                String profile=documentSnapshot.getString("url");
+                if(profile==null)
+                    Glide.with(getApplicationContext()).load(R.drawable.profile2).into(change_picture);
+                else
+                    Glide.with(getApplicationContext()).load(documentSnapshot.getString("url").toString()).into(change_picture);
                 uname.setText(documentSnapshot.getString("username"));
             }
         });

@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 
 public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auction_post_holder> {
@@ -57,6 +59,12 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
         this.data=auctionData;
         this.fragmentManager=supportFragmentManager;
         this.context=c;
+        Collections.sort(data, new Comparator<auctionPosts>() {
+            @Override
+            public int compare(auctionPosts o1, auctionPosts o2) {
+                return o1.getUploadDate().compareTo(o2.getUploadDate());
+            }
+        });
     }
 
     @NonNull
@@ -93,8 +101,9 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
             public void onFinish() {
                 if(tLeft<0)
                 {
-                    firebaseFirestore.collection("USERS").document(data.get(position).getUid()).
-                            collection("AUCTION").document(data.get(position).getAuctionId()).delete();
+                    holder.auctionCard.setVisibility(View.GONE);
+                    /*firebaseFirestore.collection("USERS").document(data.get(position).getUid()).
+                            collection("AUCTION").document(data.get(position).getAuctionId()).delete();*/
                 }
             }
         }.start();
@@ -124,6 +133,10 @@ public class auction_adapter extends RecyclerView.Adapter<auction_adapter.auctio
                     bundle.putString("auctionDesc",data.get(position).getDetails().toString());
                     bundle.putString("bidder_uid",biddeer_uid);
                     bundle.putString("user_id",user_id);
+                    bundle.putString("upload_date",data.get(position).getUploadDate());
+                    bundle.putString("hour",data.get(position).getHour());
+                    bundle.putString("min",data.get(position).getMin());
+                    bundle.putString("upload_time",data.get(position).getUploadTime());
                     b.setArguments(bundle);
 //                    FragmentManager manager=context.getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.frag_container,b).addToBackStack(null).commit();
