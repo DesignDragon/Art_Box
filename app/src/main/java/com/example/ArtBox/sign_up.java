@@ -34,31 +34,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class sign_up extends AppCompatActivity {
-    private static final String USERNAME ="username";
-    private static final String EMAIL="email";
-    private static final String UID="id";
-    private static final String url="url";
+    private static final String USERNAME = "username";
+    private static final String EMAIL = "email";
+    private static final String UID = "id";
+    private static final String url = "url";
     private FirebaseAuth authenticate;
     private FirebaseFirestore db;
     private StorageReference storageReference;
-    private String id="";
+    private String id = "";
     private EditText EditName;
     private EditText Editemail;
     private EditText Editpass;
 
     private Button s_up;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         authenticate = FirebaseAuth.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference();
-        s_up=findViewById(R.id.registeraccount);
-        db=FirebaseFirestore.getInstance();
-        EditName=(EditText) findViewById(R.id.fname);
-        Editemail=(EditText) findViewById(R.id.email);
-        Editpass=(EditText)findViewById(R.id.password);
+        storageReference = FirebaseStorage.getInstance().getReference();
+        s_up = findViewById(R.id.registeraccount);
+        db = FirebaseFirestore.getInstance();
+        EditName = (EditText) findViewById(R.id.fname);
+        Editemail = (EditText) findViewById(R.id.email);
+        Editpass = (EditText) findViewById(R.id.password);
         s_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +67,7 @@ public class sign_up extends AppCompatActivity {
             }
         });
         TextView tv1 = (TextView) findViewById(R.id.signin);
-        tv1.setOnClickListener(new View.OnClickListener(){
+        tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i3 = new Intent(sign_up.this, sign_in.class);
@@ -75,19 +76,18 @@ public class sign_up extends AppCompatActivity {
         });
     }
 
-    public void Users(String tname,String temail)
-    {
-        String name=tname;
-        String email=temail;
-        id=FirebaseAuth.getInstance().getUid();
+    public void Users(String tname, String temail) {
+        String name = tname;
+        String email = temail;
+        id = FirebaseAuth.getInstance().getUid();
 
 
-        context=getApplicationContext();
-        Map<String, Object> user=new HashMap<>();
-        user.put(USERNAME,name);
-        user.put(EMAIL,email);
-        user.put(UID,id);
-        DocumentReference DocRef=db.collection("USERS").document(id);
+        context = getApplicationContext();
+        Map<String, Object> user = new HashMap<>();
+        user.put(USERNAME, name);
+        user.put(EMAIL, email);
+        user.put(UID, id);
+        DocumentReference DocRef = db.collection("USERS").document(id);
         DocRef.set(user);
         /* DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.child("USERS").child(id).child("DETAILS").setValue(user);*/
@@ -103,8 +103,8 @@ public class sign_up extends AppCompatActivity {
 //            }
 //        });
     }
-    private void createAccount ()
-    {
+
+    private void createAccount() {
         final String email = Editemail.getText().toString().trim();
         final String pass = Editpass.getText().toString().trim();
         final String name = EditName.getText().toString().trim();
@@ -119,7 +119,7 @@ public class sign_up extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Users(name,email);
+                    Users(name, email);
                     Toast.makeText(sign_up.this, "Successful", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(sign_up.this, side_menu.class);
                     startActivity(i);

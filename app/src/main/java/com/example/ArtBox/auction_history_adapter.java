@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +33,7 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
     FragmentManager fragmentManager;
     private Context context;
     private FirebaseFirestore firebaseFirestore;
+    private FirebaseAuth auth;
 
     public class history_holder extends RecyclerView.ViewHolder {
         public ImageView img;
@@ -62,6 +67,13 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
     @Override
     public void onBindViewHolder(@NonNull final history_holder holder, int position) {
         RequestOptions requestOptions= RequestOptions.placeholderOf(R.color.bg_color).format(DecodeFormat.PREFER_ARGB_8888);
+        firebaseFirestore=FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+        final ArrayList<biddersDetails> winner=new ArrayList<>();
+        final String user=auth.getUid().toString();
+        final String auct_user=data.get(position).getUid().toString();
+        final String auct_id=data.get(position).getAuctionId().toString();
+
         Glide.with(holder.itemView).setDefaultRequestOptions(requestOptions).load(data.get(position).getUrl()).into(holder.img);
         holder.title.setText(data.get(position).getTitle().toString());
         holder.desc.setText(data.get(position).getDetails().toString());
@@ -82,7 +94,44 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
             public void onFinish() {
                 if(tLeft<0)
                 {
-                    holder.claim.setVisibility(View.VISIBLE);
+                    firebaseFirestore.collection("USERS").document(auct_user)
+                            .collection("AUCTION").document(auct_id)
+                            .collection("BIDDERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(QueryDocumentSnapshot s:queryDocumentSnapshots)
+                            {
+
+                                biddersDetails b=s.toObject(biddersDetails.class);
+                                b.setBidder_id(s.get("bidder_id").toString());
+                                b.setBid_amount(s.get("bid_amount").toString());
+                                b.setTime(s.get("time").toString());
+                                Log.d("dlist",s.get("bidder_name").toString());
+                                winner.add(b);
+                                Collections.sort(winner, new Comparator<biddersDetails>() {
+                                    @Override
+                                    public int compare(biddersDetails o1, biddersDetails o2) {
+                                        return o1.getBid_amount().compareTo(o2.getBid_amount()) ;
+                                    }
+                                });
+
+                                Collections.sort(winner, new Comparator<biddersDetails>() {
+                                    @Override
+                                    public int compare(biddersDetails o1, biddersDetails o2) {
+                                        return o1.getTime().compareTo(o2.getTime());
+                                    }
+                                });
+                                Collections.reverse(winner);
+                            }
+                            Log.d("list",winner.get(0).getBidder_name().toString());
+                            if(winner.get(0).getBidder_id().equals(user))
+                                holder.claim.setVisibility(View.VISIBLE);
+                            else
+                                holder.time.setText("oops!!");
+                        }
+                    });
+
+
                 }
             }
         }.start();

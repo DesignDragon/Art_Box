@@ -66,11 +66,13 @@ public class sign_in extends AppCompatActivity {
         if(TextUtils.isEmpty(email))
         {
             Toast.makeText(this,"Please Enter Email",Toast.LENGTH_LONG).show();
+            Editemail.requestFocus();
             return;
         }
         if (TextUtils.isEmpty(pass))
         {
             Toast.makeText(this,"Please Enter Password",Toast.LENGTH_LONG).show();
+            Editpass.requestFocus();
             return;
         }
         authenticate.signInWithEmailAndPassword(email,pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

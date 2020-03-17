@@ -27,26 +27,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appname"
         tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/google_signin"
-        android:src="@drawable/google_icon"
-        android:layout_width="wrap_content"
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints" />
-    <TextView
-        android:id="@+id/gotosignin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="76dp"
-        android:text="ALREADY HAVE AN ACCOUNT ?"
-        android:textColor="@color/text_color"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gotosignup"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gotosignup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/google"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

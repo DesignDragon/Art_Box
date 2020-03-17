@@ -8,6 +8,6 @@
         android:startX="65"
         android:startY="35">
     </gradient>
-    <corners android:radius="50dp" />
+    <corners android:radius="150dp" />
     <stroke android:color="@color/bar_color" android:dashGap="0dp" android:width="3dp"></stroke>
 </shape>

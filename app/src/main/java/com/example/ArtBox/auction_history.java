@@ -60,6 +60,7 @@ public class auction_history extends Fragment {
                     up.setAuctionId(s.get("auctionId").toString());
                     up.setTitle(s.get("title").toString());
                     up.setUploadDate(s.get("uploadDate").toString());
+                    up.setUid(s.get("uid").toString());
                     data.add(up);
                     Log.d("h",s.get("post").toString());
                 }

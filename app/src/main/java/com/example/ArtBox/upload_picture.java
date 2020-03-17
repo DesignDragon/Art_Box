@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,44 +58,45 @@ public class upload_picture extends AppCompatActivity {
     private ImageView uploadImg;
     private Button submit;
     private EditText description;
-    private ContentLoadingProgressBar pb;
+    private ProgressBar pb;
     private byte[] imgData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_picture);
 
 
-        firebaseAuth= FirebaseAuth.getInstance();
-        user_id= firebaseAuth.getCurrentUser().getUid();
-        uploadImg= (ImageView) findViewById(R.id.image_store);
-        firebaseFirestore= FirebaseFirestore.getInstance();
-        storageReference= FirebaseStorage.getInstance().getReference();
-        pb=findViewById(R.id.progress_bar);
+        firebaseAuth = FirebaseAuth.getInstance();
+        user_id = firebaseAuth.getCurrentUser().getUid();
+        uploadImg = (ImageView) findViewById(R.id.image_store);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+        pb = findViewById(R.id.progress);
         uploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 chooseImage();
             }
         });
-        submit= (Button) findViewById(R.id.upload);
-        description=(EditText) findViewById(R.id.description);
+        submit = (Button) findViewById(R.id.upload);
+        description = (EditText) findViewById(R.id.description);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                final String image_caption=description.getText().toString();
-                if(!TextUtils.isEmpty(image_caption)&&imageUri!=null)
-                {
-                    File newFile= new File(imageUri.getPath());
-                    UploadTask imgPath = storageReference.child(user_id).child(description.getText().toString() +".jpg").putFile(Uri.fromFile(newFile));
+                final String image_caption = description.getText().toString();
+                if (!TextUtils.isEmpty(image_caption) && imageUri != null) {
+                    pb.setVisibility(View.VISIBLE);
+                    File newFile = new File(imageUri.getPath());
+                    UploadTask imgPath = storageReference.child(user_id).child(description.getText().toString() + ".jpg").putFile(Uri.fromFile(newFile));
                     imgPath.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
-                                pb.setVisibility(View.VISIBLE);
+
                                 storeData(task);
-                                startActivity(new Intent(upload_picture.this,side_menu.class));
+                                startActivity(new Intent(upload_picture.this, side_menu.class));
                                 finish();
                             } else {
                                 Toast.makeText(upload_picture.this, "Somethng went wrong", Toast.LENGTH_LONG).show();
@@ -118,18 +120,18 @@ public class upload_picture extends AppCompatActivity {
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                String name=documentSnapshot.getString("username").toString();
+                                String name = documentSnapshot.getString("username").toString();
                                 Map<String, Object> userData = new HashMap<>();
-                                final String post_id= UUID.randomUUID().toString();
-                                String uploadDate=new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-                                String uploadTime= DateFormat.getDateTimeInstance().format(new Date());
-                                userData.put("url",uri.toString());
+                                final String post_id = UUID.randomUUID().toString();
+                                String uploadDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                                String uploadTime = DateFormat.getDateTimeInstance().format(new Date());
+                                userData.put("url", uri.toString());
                                 userData.put("caption", description.getText().toString());
-                                userData.put("uploadDate",uploadDate);
-                                userData.put("uploadTime",uploadTime);
-                                userData.put("post_id",post_id);
-                                userData.put("username",name);
-                                userData.put("userID",user_id);
+                                userData.put("uploadDate", uploadDate);
+                                userData.put("uploadTime", uploadTime);
+                                userData.put("post_id", post_id);
+                                userData.put("username", name);
+                                userData.put("userID", user_id);
                                 firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").document(post_id).set(userData);
                             }
                         });
@@ -151,33 +153,27 @@ public class upload_picture extends AppCompatActivity {
         }
     }
 
-    public void chooseImage()
-    {
+    public void chooseImage() {
         CropImage.startPickImageActivity(this);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK)
-        {
-            Uri img=CropImage.getPickImageResultUri(this,data);
-            if(CropImage.isReadExternalStoragePermissionsRequired(this,img))
-            {
-                imageUri=img;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},0);
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri img = CropImage.getPickImageResultUri(this, data);
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, img)) {
+                imageUri = img;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                startCropImageActivity(img);
             }
-            else
-                {
-                    startCropImageActivity(img);
-                }
         }
-        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-        {
-            CropImage.ActivityResult result= CropImage.getActivityResult(data);
-            if(resultCode == RESULT_OK)
-            {
-                imageUri=result.getUri();
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageUri = result.getUri();
                 uploadImg.setImageURI(result.getUri());
             }
         }
@@ -185,21 +181,18 @@ public class upload_picture extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(imageUri!=null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
+        if (imageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startCropImageActivity(imageUri);
-        }
-        else{
-            Toast.makeText(this,"Permission Denied",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void startCropImageActivity(Uri u)
-    {
+    private void startCropImageActivity(Uri u) {
         CropImage.activity(u)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setMultiTouchEnabled(true)
                 .start(this);
-        imageUri=u;
+        imageUri = u;
     }
 }
