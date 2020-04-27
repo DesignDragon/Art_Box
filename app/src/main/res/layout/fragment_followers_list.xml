@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".following_list">
+    tools:context=".followers_list">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/following_recycler"
+        android:id="@+id/followers_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_color"

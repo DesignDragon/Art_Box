@@ -1,16 +1,15 @@
 package com.example.ArtBox;
 
 import android.os.Bundle;
-
-import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,10 +19,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +35,6 @@ public class home_screen_fragment extends Fragment {
     private String user_id;
     private FirebaseAuth firebaseAuth;
     private home_adapter adapter;
-    private ContentLoadingProgressBar pbar;
     home_screen_fragment(){}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,12 +44,21 @@ public class home_screen_fragment extends Fragment {
         if (getActivity() != null && getActivity() instanceof side_menu) {
             ((side_menu) getActivity()).getNav().setVisibility(view.VISIBLE);
         }
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("                       HOME");
         recyclerView= view.findViewById(R.id.home_recycler);
         firebaseFirestore= FirebaseFirestore.getInstance();
         firebaseAuth= FirebaseAuth.getInstance();
         user_id=firebaseAuth.getUid().toString();
-        pbar=view.findViewById(R.id.progress_bar);
-        pbar.setVisibility(view.VISIBLE);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String token=instanceIdResult.getToken().toString();
+                HashMap<String,Object> d=new HashMap();
+                d.put("token",token);
+                firebaseFirestore.collection("USERS").document(user_id).update(d);
+            }
+        });
+
         final ArrayList<userPosts> user_list=new ArrayList<>();
         adapter=new home_adapter(user_list,getActivity().getSupportFragmentManager(),getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -1,17 +1,16 @@
 package com.example.ArtBox;
 
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -85,7 +84,7 @@ public class sign_in extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(sign_in.this,"Fail",Toast.LENGTH_LONG).show();
+                    Toast.makeText(sign_in.this,"Invalid Email or Password",Toast.LENGTH_LONG).show();
                 }
             }
         });

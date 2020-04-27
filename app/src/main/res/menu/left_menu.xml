@@ -6,16 +6,10 @@
             android:icon="@drawable/profile"
             android:title="Profile">
         </item>
-
-        <item
-            android:id="@+id/save"
-            android:icon="@drawable/save"
-            android:title="Saved">
-        </item>
         <item
             android:id="@+id/auct_panel"
             android:icon="@drawable/user_auction"
-            android:title="Auction Panel">
+            android:title="Auction History">
         </item>
         <item
             android:id="@+id/logout"
@@ -26,24 +20,9 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/setting"
-                android:icon="@drawable/setting"
-                android:title="Settings">
-            </item>
-            <item
-                android:id="@+id/privacy"
-                android:icon="@drawable/privacy"
-                android:title="Privacy">
-            </item>
-            <item
                 android:id="@+id/security"
                 android:icon="@drawable/security"
                 android:title="Secuity">
-            </item>
-            <item
-                android:id="@+id/help"
-                android:icon="@drawable/help"
-                android:title="Help">
             </item>
         </menu>
     </item>

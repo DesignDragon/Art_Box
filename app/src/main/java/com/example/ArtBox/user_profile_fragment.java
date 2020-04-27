@@ -3,13 +3,6 @@ package com.example.ArtBox;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,8 +28,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
 public class user_profile_fragment extends Fragment {
 
 
@@ -43,9 +40,10 @@ public class user_profile_fragment extends Fragment {
     private TextView user;
     private ImageView setProfile;
     Button editB;
-    private TextView followers;
     private TextView following;
     private TextView following_num;
+    private TextView followers;
+    private TextView followers_num;
     private TextView post_count;
     private ContentLoadingProgressBar pbar;
     public user_profile_fragment() {
@@ -76,6 +74,10 @@ public class user_profile_fragment extends Fragment {
         editB=(Button) v.findViewById(R.id.edit_profile);
         following=(TextView) v.findViewById(R.id.following);
         following_num=(TextView) v.findViewById(R.id.following_count);
+
+        followers=(TextView) v.findViewById(R.id.followers);
+        followers_num=(TextView) v.findViewById(R.id.followers_count);
+
         post_count=(TextView) v.findViewById(R.id.post_count);
         /*Checking for searched user data after clicking on the username in search tab.
           If the user id is there its profile will be visible else current logged in user profile will be visible
@@ -112,12 +114,27 @@ public class user_profile_fragment extends Fragment {
                         }
                     });
 
+                    followers.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            followers_list f=new followers_list();
+                            f.setArguments(b);
+                            getFragmentManager().beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
+                        }
+                    });
 
                     /*Displays following count*/
                     firebaseFirestore.collection("USERS").document(search_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                             following_num.setText(String.valueOf(queryDocumentSnapshots.size()));
+                            Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
+                        }
+                    });
+                    firebaseFirestore.collection("USERS").document(search_id).collection("FOLLOWERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            followers_num.setText(String.valueOf(queryDocumentSnapshots.size()));
                             Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
                         }
                     });
@@ -157,8 +174,20 @@ public class user_profile_fragment extends Fragment {
                                 data.put("username",username);
                                 data.put("id",search_id);
                                 data.put("url",profile);
-                                firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").document(search_id).set(data);
+                                firebaseFirestore.collection("USERS").document(user_id).
+                                        collection("FOLLOWING").document(search_id).set(data);
 
+                                firebaseFirestore.collection("USERS").document(user_id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        Map<String,Object> data2=new HashMap<>();
+                                        data2.put("username",documentSnapshot.get("username").toString());
+                                        data2.put("id",user_id);
+                                        data2.put("url",documentSnapshot.get("url").toString());
+                                        firebaseFirestore.collection("USERS").document(search_id).
+                                                collection("FOLLOWERS").document(user_id).set(data2);
+                                    }
+                                });
                             }
                         });
                     } catch (Exception e){
@@ -179,7 +208,13 @@ public class user_profile_fragment extends Fragment {
                     getFragmentManager().beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
                 }
             });
-
+            followers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    followers_list f=new followers_list();
+                    getFragmentManager().beginTransaction().replace(R.id.frag_container,f).addToBackStack(null).commit();
+                }
+            });
             /*Displays following count*/
             firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
@@ -188,7 +223,13 @@ public class user_profile_fragment extends Fragment {
                     Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
                 }
             });
-
+            firebaseFirestore.collection("USERS").document(user_id).collection("FOLLOWERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    followers_num.setText(String.valueOf(queryDocumentSnapshots.size()));
+                    Log.d("count", String.valueOf(queryDocumentSnapshots.size()));
+                }
+            });
 
             /*Displaying no of posts by user*/
             firebaseFirestore.collection("USERS").document(user_id).collection("POSTS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

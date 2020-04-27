@@ -1,11 +1,9 @@
 package com.example.ArtBox;
 
 import android.content.Context;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +18,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +71,7 @@ public class home_adapter extends RecyclerView.Adapter<home_adapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         holder.name.setText(post_data.get(position).getUsername());
-        Glide.with(holder.itemView).load(post_data.get(position).getUrl()).into(holder.img);
+        Glide.with(holder.itemView).load(post_data.get(position).getUrl()).placeholder(R.drawable.gallery).into(holder.img);
         holder.caption.setText(post_data.get(position).getCaption());
         holder.date.setText(post_data.get(position).getUploadTime());
         firebaseFirestore= FirebaseFirestore.getInstance();

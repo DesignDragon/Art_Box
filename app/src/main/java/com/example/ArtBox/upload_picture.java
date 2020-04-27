@@ -1,12 +1,5 @@
 package com.example.ArtBox;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.ContentLoadingProgressBar;
-
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,7 +9,6 @@ import android.icu.text.DateFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +35,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -86,6 +81,10 @@ public class upload_picture extends AppCompatActivity {
             public void onClick(View view) {
 
                 final String image_caption = description.getText().toString();
+                if(image_caption.isEmpty())
+                    Toast.makeText(upload_picture.this,"Discreption cannot be empty. Please write description.",Toast.LENGTH_LONG).show();
+                if(imageUri==null)
+                    Toast.makeText(upload_picture.this,"Please select an image!!!",Toast.LENGTH_LONG).show();
                 if (!TextUtils.isEmpty(image_caption) && imageUri != null) {
                     pb.setVisibility(View.VISIBLE);
                     File newFile = new File(imageUri.getPath());

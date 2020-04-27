@@ -35,15 +35,16 @@
         android:id="@+id/btm_view"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_gravity="bottom"
-        app:menu="@menu/btm_menu"
-        app:itemBackground="@color/bar_color"
-        app:itemIconTint="#ffffff"
-        app:itemIconSize="35dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        />
+
+        android:layout_gravity="bottom"
+        app:itemBackground="@color/bar_color"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@color/text_color"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/btm_menu" />
 
     <FrameLayout
         android:id="@+id/frag_container"

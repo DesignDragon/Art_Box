@@ -2,16 +2,15 @@ package com.example.ArtBox;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.DialogFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +48,7 @@ public class enlarge_post_fragment extends DialogFragment {
         img=(ImageView) v.findViewById(R.id.enlarge_posts);
         like=(ImageButton) v.findViewById(R.id.like_post);
         delete=(ImageButton) v.findViewById(R.id.delete_post);
+
         builder=new AlertDialog.Builder(getContext());
         /* Intent i=getIntent();
         final String post=i.getExtras().getString("post");*/

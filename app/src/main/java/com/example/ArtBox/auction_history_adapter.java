@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.concurrent.TimeUnit;
 
 public class auction_history_adapter extends RecyclerView.Adapter<auction_history_adapter.history_holder> {
+    public static final int MSG=0;
+    public static final int EMPTY_MSG=1;
     private ArrayList<auctionPosts> data;
     FragmentManager fragmentManager;
     private Context context;
@@ -60,8 +62,14 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
     @NonNull
     @Override
     public auction_history_adapter.history_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.history_auct,parent,false);
-        return new history_holder(v);
+        if(viewType==MSG) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_auct, parent, false);
+            return new history_holder(v);
+        }
+        else {
+            View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_auct_history,parent,false);
+            return new history_holder(v);
+        }
     }
 
     @Override
@@ -135,6 +143,14 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
                 }
             }
         }.start();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(data.get(position).getUrl().isEmpty())
+            return EMPTY_MSG;
+        else
+            return MSG;
     }
 
     @Override

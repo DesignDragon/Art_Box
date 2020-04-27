@@ -18,34 +18,37 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
-public class following_list extends Fragment {
+public class followers_list extends Fragment {
     public RecyclerView r;
     private String uid;
     public RecyclerView.Adapter adapter;
     private ArrayList<userProfileData> data;
     private FirebaseFirestore db;
     private FirebaseAuth firebaseAuth;
-    public following_list() {
+    public followers_list() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_following_list, container, false);
-        r=(RecyclerView) v.findViewById(R.id.following_recycler);
+        View v= inflater.inflate(R.layout.fragment_followers_list, container, false);
+        r=(RecyclerView) v.findViewById(R.id.followers_recycler);
         data=new ArrayList<userProfileData>();
         db = FirebaseFirestore.getInstance();
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth= FirebaseAuth.getInstance();
         uid=firebaseAuth.getUid().toString();
 
         /*Shows the following list of searched user and current user*/
         if(getArguments()!=null)
         {
             final String searche_id=getArguments().getString("data");
-            db.collection("USERS").document(searche_id).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            db.collection("USERS").document(searche_id).collection("FOLLOWERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     for(QueryDocumentSnapshot s:queryDocumentSnapshots)
@@ -64,7 +67,7 @@ public class following_list extends Fragment {
         }
 
         else {
-            db.collection("USERS").document(uid).collection("FOLLOWING").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            db.collection("USERS").document(uid).collection("FOLLOWERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     for(QueryDocumentSnapshot s:queryDocumentSnapshots)

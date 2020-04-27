@@ -1,84 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:layout_marginTop="?actionBarSize">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/divider1"
-        android:background="@color/bar_color"
-        android:layout_marginTop="10dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:id="@+id/home_uname"
-        android:layout_below="@id/divider1"
-        android:text="USERNAME"
-        android:padding="8dp"
-        android:textSize="20sp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/home_uname"
-        android:id="@+id/divider2"
-        android:background="@color/bar_color"/>
-    <ImageView
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:src="@drawable/camera"
-        android:id="@+id/home_img"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/divider2"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_below="@id/home_img"
-        android:id="@+id/like"
-        android:layout_marginStart="20dp"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/dislike"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="count"
-        android:id="@+id/like_count"
-        android:textSize="15sp"
-        android:padding="5dp"
-        android:layout_marginTop="2dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/like"
-        android:layout_marginStart="20dp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/home_date"
-        android:layout_below="@id/home_img"
-        android:text="date"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="15sp"
-        />
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/home_caption"
-        android:text="caption"
-        android:textSize="20sp"
-        android:layout_below="@id/like_count"
-        android:padding="8dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/bar_color"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true">
-    </TextView>
-</RelativeLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/home_uname"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:padding="8dp"
+                android:text="USERNAME"
+                android:textSize="20sp" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/home_uname"
+                android:background="@color/bg_color" />
+
+            <ImageView
+                android:id="@+id/home_img"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_below="@id/divider2"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:src="@drawable/camera" />
+
+            <ImageView
+                android:id="@+id/like"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:layout_below="@id/home_img"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/dislike" />
+
+            <TextView
+                android:id="@+id/like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/like"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="2dp"
+                android:padding="5dp"
+                android:text="count"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/home_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_img"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:text="date"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/home_caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/like_count"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="4dp"
+                android:padding="8dp"
+                android:text="caption"
+                android:textSize="20sp">
+            </TextView>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

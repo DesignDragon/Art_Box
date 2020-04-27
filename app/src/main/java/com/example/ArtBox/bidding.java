@@ -1,13 +1,8 @@
 package com.example.ArtBox;
 
 import android.icu.text.DateFormat;
-import android.icu.text.SymbolTable;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -64,7 +62,7 @@ public class bidding extends Fragment {
         final String ItemId= getArguments().getString("auction_id").toString(); //aur yaha fetch kiya
         price.setMinValue(Integer.parseInt(getArguments().getString("auctInitialPrice")));
 
-        price.setMaxValue(15000);
+        price.setMaxValue(25000);
         price.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
