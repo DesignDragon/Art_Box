@@ -1,6 +1,7 @@
 package com.example.ArtBox;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,20 +18,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.ArtBox.checksumManager.CheckSumServiceHelper;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.paytm.pgsdk.PaytmOrder;
+import com.paytm.pgsdk.PaytmPGService;
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 public class auction_history_adapter extends RecyclerView.Adapter<auction_history_adapter.history_holder> {
-    public static final int MSG=0;
-    public static final int EMPTY_MSG=1;
+    public static final int MSG = 0;
+    public static String CHECKSUMHASH="";
+    public static final int EMPTY_MSG = 1;
     private ArrayList<auctionPosts> data;
     FragmentManager fragmentManager;
     private Context context;
@@ -43,83 +52,82 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
         public TextView desc;
         public TextView time;
         public Button claim;
+
         public history_holder(@NonNull View itemView) {
             super(itemView);
-            img=(ImageView) itemView.findViewById(R.id.hist_img);
-            title=itemView.findViewById(R.id.hist_title);
-            desc=itemView.findViewById(R.id.hist_desc);
-            claim=itemView.findViewById(R.id.claim);
-            time=itemView.findViewById(R.id.tleft);
+            img = (ImageView) itemView.findViewById(R.id.hist_img);
+            title = itemView.findViewById(R.id.hist_title);
+            desc = itemView.findViewById(R.id.hist_desc);
+            claim = itemView.findViewById(R.id.claim);
+            time = itemView.findViewById(R.id.tleft);
         }
     }
 
     public auction_history_adapter(ArrayList<auctionPosts> data, FragmentManager supportFragmentManager, Context context) {
-        this.data=data;
-        this.fragmentManager=supportFragmentManager;
-        this.context=context;
+        this.data = data;
+        this.fragmentManager = supportFragmentManager;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public auction_history_adapter.history_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType==MSG) {
+        if (viewType == MSG) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_auct, parent, false);
             return new history_holder(v);
-        }
-        else {
-            View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_auct_history,parent,false);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_auct_history, parent, false);
             return new history_holder(v);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull final history_holder holder, int position) {
-        RequestOptions requestOptions= RequestOptions.placeholderOf(R.color.bg_color).format(DecodeFormat.PREFER_ARGB_8888);
-        firebaseFirestore=FirebaseFirestore.getInstance();
-        auth= FirebaseAuth.getInstance();
-        final ArrayList<biddersDetails> winner=new ArrayList<>();
-        final String user=auth.getUid().toString();
-        final String auct_user=data.get(position).getUid().toString();
-        final String auct_id=data.get(position).getAuctionId().toString();
+        RequestOptions requestOptions = RequestOptions.placeholderOf(R.color.bg_color).format(DecodeFormat.PREFER_ARGB_8888);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        final ArrayList<biddersDetails> winner = new ArrayList<>();
+        final String user = auth.getUid().toString();
+        final String auct_user = data.get(position).getUid().toString();
+        final String auct_id = data.get(position).getAuctionId().toString();
 
         Glide.with(holder.itemView).setDefaultRequestOptions(requestOptions).load(data.get(position).getUrl()).into(holder.img);
         holder.title.setText(data.get(position).getTitle().toString());
         holder.desc.setText(data.get(position).getDetails().toString());
-        Log.d("hist",data.get(position).getTitle().toString());
-        long upTime=Long.parseLong(data.get(position).getUploadTime());
-        long tPassed=System.currentTimeMillis() - upTime;
-        final long tLeft=(Long.parseLong(data.get(position).getHour())*3600000 + Long.parseLong(data.get(position).getMin())*60000)-tPassed;
-        CountDownTimer countDownTimer = new CountDownTimer(tLeft,1000) {
+        Log.d("hist", data.get(position).getTitle().toString());
+        long upTime = Long.parseLong(data.get(position).getUploadTime());
+        long tPassed = System.currentTimeMillis() - upTime;
+        final long tLeft = (Long.parseLong(data.get(position).getHour()) * 3600000 + Long.parseLong(data.get(position).getMin()) * 60000) - tPassed;
+        CountDownTimer countDownTimer = new CountDownTimer(tLeft, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                final String time=String.format("ENDS IN: %02d:%02d:%02d",
+                final String time = String.format("ENDS IN: %02d:%02d:%02d",
                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)-TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)-TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
                 holder.time.setText(time);
             }
+
             @Override
             public void onFinish() {
-                if(tLeft<0)
-                {
+                if (tLeft < 0) {
                     firebaseFirestore.collection("USERS").document(auct_user)
                             .collection("AUCTION").document(auct_id)
                             .collection("BIDDERS").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for(QueryDocumentSnapshot s:queryDocumentSnapshots)
-                            {
+                            for (QueryDocumentSnapshot s : queryDocumentSnapshots) {
 
-                                biddersDetails b=s.toObject(biddersDetails.class);
+                                biddersDetails b = s.toObject(biddersDetails.class);
                                 b.setBidder_id(s.get("bidder_id").toString());
                                 b.setBid_amount(s.get("bid_amount").toString());
                                 b.setTime(s.get("time").toString());
-                                Log.d("dlist",s.get("bidder_name").toString());
+                                Log.d("dlist", s.get("bidder_name").toString());
                                 winner.add(b);
                                 Collections.sort(winner, new Comparator<biddersDetails>() {
                                     @Override
                                     public int compare(biddersDetails o1, biddersDetails o2) {
-                                        return o1.getBid_amount().compareTo(o2.getBid_amount()) ;
+                                        return o1.getBid_amount().compareTo(o2.getBid_amount());
                                     }
                                 });
 
@@ -131,10 +139,83 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
                                 });
                                 Collections.reverse(winner);
                             }
-                            Log.d("list",winner.get(0).getBidder_name().toString());
-                            if(winner.get(0).getBidder_id().equals(user))
+                            Log.d("list", winner.get(0).getBidder_name().toString());
+                            if (winner.get(0).getBidder_id().equals(user)) {
                                 holder.claim.setVisibility(View.VISIBLE);
-                            else
+                                final float amt= Float.parseFloat(winner.get(0).getBid_amount());
+                                final String orderID="order"+new Random().nextInt(1000);
+                                final String custID="cust"+new Random().nextInt(1000);
+                                Log.d("amt", String.valueOf(amt));
+
+                                holder.claim.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        PaytmPGService service=PaytmPGService.getStagingService("");
+                                        HashMap<String,String> hashMap=new HashMap<>();
+                                        hashMap.put("MID",keys.MID);
+                                        hashMap.put("ORDER_ID", orderID);
+                                        hashMap.put("WEBSITE", "WEBSTAGING");
+                                        hashMap.put("INDUSTRY_TYPE_ID", "Retail");
+                                        hashMap.put("CHANNEL_ID", "WAP");
+                                        hashMap.put("CUST_ID", custID);
+                                        hashMap.put("TXN_AMOUNT", String.valueOf(amt)+"0");
+                                        hashMap.put(
+                                                "CALLBACK_URL",
+                                                "https://securegw-stage.paytm.in/theia/paytmCallback?ORDER_ID="+orderID
+                                        );
+
+                                        TreeMap<String,String> treeMap=new TreeMap<>();
+                                        treeMap.putAll(hashMap);
+                                        String CHECKSUMHASH="";
+                                        try {
+                                          CHECKSUMHASH =new CheckSumServiceHelper().genrateCheckSum(keys.MID_KEY,treeMap);
+                                            Log.d("sum",CHECKSUMHASH.toString());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        hashMap.put("CHECKSUMHASH", CHECKSUMHASH);
+                                        PaytmOrder order=new PaytmOrder(hashMap);
+                                        service.initialize(order,null);
+                                        service.startPaymentTransaction(context, true, true, new PaytmPaymentTransactionCallback() {
+                                            @Override
+                                            public void onTransactionResponse(Bundle inResponse) {
+
+                                            }
+
+                                            @Override
+                                            public void networkNotAvailable() {
+
+                                            }
+
+                                            @Override
+                                            public void clientAuthenticationFailed(String inErrorMessage) {
+
+                                            }
+
+                                            @Override
+                                            public void someUIErrorOccurred(String inErrorMessage) {
+
+                                            }
+
+                                            @Override
+                                            public void onErrorLoadingWebPage(int iniErrorCode, String inErrorMessage, String inFailingUrl) {
+
+                                            }
+
+                                            @Override
+                                            public void onBackPressedCancelTransaction() {
+
+                                            }
+
+                                            @Override
+                                            public void onTransactionCancel(String inErrorMessage, Bundle inResponse) {
+
+                                            }
+                                        });
+
+                                    }
+                                });
+                            } else
                                 holder.time.setText("oops!!");
                         }
                     });
@@ -147,7 +228,7 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
 
     @Override
     public int getItemViewType(int position) {
-        if(data.get(position).getUrl().isEmpty())
+        if (data.get(position).getUrl().isEmpty())
             return EMPTY_MSG;
         else
             return MSG;
@@ -159,7 +240,7 @@ public class auction_history_adapter extends RecyclerView.Adapter<auction_histor
     }
 
     public void update(ArrayList<auctionPosts> data) {
-        this.data=data;
+        this.data = data;
         notifyDataSetChanged();
     }
 }

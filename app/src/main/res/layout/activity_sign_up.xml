@@ -7,62 +7,72 @@
     tools:context=".sign_up"
     android:background="@color/bg_color">
 
-
-    <EditText
-        android:id="@+id/fname"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fname_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/edittext_design"
-        android:hint="USERNAME"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:textColor="@color/text_color"
-        android:textColorHint="@color/text_color"
-        android:textSize="20dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select unique USERNAME"
+            android:inputType="text"
+            android:textColorHint="@color/text_color"
+            android:background="@drawable/edittext_design"
+            android:padding="8dp"
+            android:textSize="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-    <EditText
-        android:id="@+id/email"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email_box1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/edittext_design"
-        android:hint="EMAIL ADDRESS"
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20sp"
-        android:padding="8dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/fname" />
+        app:layout_constraintTop_toBottomOf="@id/fname_box"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="EMAIL ID"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/text_color"
+            android:background="@drawable/edittext_design"
+            android:padding="8dp"
+            android:textSize="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/password"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/pass_box1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/edittext_design"
-        android:hint="PASSWORD"
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColorHint="#FFFFFF"
-        android:textSize="20dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/email" />
+        app:layout_constraintTop_toBottomOf="@id/email_box1"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:textColorHint="@color/text_color"
+            android:background="@drawable/edittext_design"
+            android:padding="8dp"
+            android:textSize="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/registeraccount"
@@ -77,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password" />
+        app:layout_constraintTop_toBottomOf="@id/pass_box1" />
 
     <TextView
         android:id="@+id/signin"

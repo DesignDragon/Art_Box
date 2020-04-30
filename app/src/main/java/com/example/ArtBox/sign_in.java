@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,8 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class sign_in extends AppCompatActivity {
     private FirebaseAuth authenticate;
-    private EditText Editemail;
-    private EditText Editpass;
+    private AppCompatEditText Editemail;
+    private AppCompatEditText Editpass;
     private TextView forgot;
     private Button login;
     private TextView signup;
@@ -33,8 +33,8 @@ public class sign_in extends AppCompatActivity {
         signup=(TextView) findViewById(R.id.signup);
         authenticate=FirebaseAuth.getInstance();
         login=findViewById(R.id.login);
-        Editemail=(EditText) findViewById(R.id.emailid);
-        Editpass=(EditText) findViewById(R.id.pass);
+        Editemail= findViewById(R.id.emailid);
+        Editpass= findViewById(R.id.pass);
         forgot=(TextView) findViewById(R.id.forgot);
         login.setOnClickListener(new View.OnClickListener() {
             @Override

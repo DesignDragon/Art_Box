@@ -1,23 +1,17 @@
 package com.example.ArtBox;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,9 +21,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,9 +34,9 @@ public class sign_up extends AppCompatActivity {
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private String id = "";
-    private EditText EditName;
-    private EditText Editemail;
-    private EditText Editpass;
+    private AppCompatEditText EditName;
+    private AppCompatEditText Editemail;
+    private AppCompatEditText Editpass;
 
     private Button s_up;
     Context context;
@@ -57,9 +49,9 @@ public class sign_up extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         s_up = findViewById(R.id.registeraccount);
         db = FirebaseFirestore.getInstance();
-        EditName = (EditText) findViewById(R.id.fname);
-        Editemail = (EditText) findViewById(R.id.email);
-        Editpass = (EditText) findViewById(R.id.password);
+        EditName =  findViewById(R.id.fname);
+        Editemail = findViewById(R.id.email);
+        Editpass = findViewById(R.id.password);
         s_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
